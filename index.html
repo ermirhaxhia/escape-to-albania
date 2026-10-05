@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escape to Albania · Zgjidh modelin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #E9E6E0; --ink: #1E1D1B; --muted: #4A4741; --line: #ECE9E3; --blue: #1F6FB2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Instrument Sans', sans-serif; line-height: 1.5; }
+  .mono { font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #6B675F; }
+  header, main, footer { width: min(1240px, 100% - 40px); margin-inline: auto; }
+  header { padding: 64px 0 40px; max-width: 900px; margin-left: max(20px, calc((100% - 1240px) / 2)); }
+  h1 { margin: 8px 0 12px; font-size: clamp(34px, 5vw, 52px); font-weight: 600; letter-spacing: -.01em; line-height: 1.05; }
+  header p { margin: 0; font-size: 18px; color: var(--muted); max-width: 720px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 540px), 1fr)); gap: 32px; padding-bottom: 56px; }
+  .card { background: #fff; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 1px 0 rgba(0,0,0,.04); }
+  .preview { position: relative; aspect-ratio: 16/10; overflow: hidden; background: #ddd; display: block; border-bottom: 1px solid var(--line); }
+  .preview iframe { position: absolute; top: 0; left: 0; width: 1280px; height: 800px; border: 0; transform-origin: 0 0; pointer-events: none; }
+  .preview::after { content: "Hape modelin →"; position: absolute; inset: 0; display: grid; place-items: center; background: rgba(15,25,35,.55); color: #fff; font-weight: 700; font-size: 20px; opacity: 0; transition: opacity .2s; }
+  .preview:hover::after, .preview:focus-visible::after { opacity: 1; }
+  .body { padding: 26px 30px 30px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+  .title { display: flex; align-items: center; gap: 12px; }
+  .id { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; background: var(--ink); color: #fff; padding: 4px 8px; border-radius: 3px; }
+  .title h2 { margin: 0; font-size: 24px; font-weight: 600; }
+  .body p { margin: 0; color: var(--muted); font-size: 16px; }
+  .swatches { display: flex; gap: 6px; }
+  .swatches i { width: 28px; height: 28px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+  .fonts { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B675F; }
+  .pages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: auto; padding-top: 6px; }
+  .pages a { text-align: center; padding: 11px 6px; border: 1.5px solid var(--ink); border-radius: 6px; text-decoration: none; color: var(--ink); font-weight: 600; font-size: 14px; transition: .15s; }
+  .pages a:hover { background: var(--ink); color: #fff; }
+  .pages a.main { background: var(--ink); color: #fff; }
+  .pages a.main:hover { background: var(--blue); border-color: var(--blue); }
+  .note { background: #1E1D1B; color: #F4F1EA; border-radius: 8px; padding: 30px 36px; margin-bottom: 56px; display: grid; gap: 8px; }
+  .note p { margin: 0; color: #C9C3B8; max-width: 760px; }
+  footer { padding-bottom: 48px; font-size: 14px; color: #6B675F; }
+  @media (max-width: 560px) { .pages { grid-template-columns: 1fr 1fr; } .body { padding: 22px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="mono">Escape to Albania · Website demo · Raundi 1</div>
+  <h1>Katër modele, një website.</h1>
+  <p>Çdo model ndjek një nga katër drejtimet e identitetit vizual dhe ka 4 faqe të plota: Home, Tours, About dhe Contact. Kliko një model për ta shfletuar. Brenda tij, shiriti poshtë ekranit të lejon të kalosh nga njëri model te tjetri në të njëjtën faqe.</p>
+</header>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="note">
+    <div class="mono">Shënim për demon</div>
+    <p>Fotot janë zëvendësuar nga ilustrime me paletën e secilit model; tekstet, çmimet, vlerësimet dhe kontaktet janë shembuj. Formulari nuk dërgon asgjë. Struktura, ngjyrat, tipografia dhe ndjesia e secilit model janë ato që krahasohen.</p>
+  </div>
+</main>
+
+<footer>Escape to Albania · demo e brendshme për prezantim te klienti</footer>
+
+<script>
+  var MODELS = [
+    { id: '1a', folder: 'model-1a-udha', name: 'Udha · The Path',
+      idea: 'Vija e avionit bëhet një shteg që ngjitet drejt diellit. Hero me peizazh të plotë, kënde të rrumbullakosura, blu Adriatiku dhe terrakotë.',
+      colors: ['#1F6FB2', '#0F2A3D', '#E8743F', '#F3E9D7', '#FBF8F2'], fonts: 'Bricolage Grotesque + Figtree' },
+    { id: '1b', folder: 'model-1b-dielli', name: 'Dielli mbi det · Sun over the Sea',
+      idea: 'Gjysmë dielli mbi horizont. Kompozim i përqendruar, tituj serif, buton në formë pilule, tone deti, dielli dhe ulliri.',
+      colors: ['#1C7A86', '#F0A23A', '#8A9A5B', '#1D2B2A', '#F6F1E7'], fonts: 'Young Serif + Instrument Sans' },
+    { id: '1c', folder: 'model-1c-plot-kontur', name: 'Plot & Kontur · Bold & Outline',
+      idea: 'Evolucioni më i afërt i logos aktuale. Stil postere me shkronja të mëdha, fjalë me kontur, hije të forta dhe kornizë të trasha.',
+      colors: ['#2E86C9', '#10202E', '#E8553D', '#FAF7F0'], fonts: 'Archivo Black + Archivo' },
+    { id: '1d', folder: 'model-1d-dera', name: 'Dera · The Door',
+      idea: 'Harku i derës së një kulle guri, simbol i mikpritjes. Imazhe në formë harku, tone guri, terrakote, mjalti dhe ulliri.',
+      colors: ['#B4532A', '#E2A548', '#5B6B3A', '#2A2623', '#EDE5D6'], fonts: 'Gloock + Albert Sans' }
+  ];
+  var PAGES = [['index', 'Home'], ['tours', 'Tours'], ['about', 'About'], ['contact', 'Contact']];
+
+  document.getElementById('grid').innerHTML = MODELS.map(function (m) {
+    return '<article class="card" id="' + m.id + '">' +
+      '<a class="preview" href="' + m.folder + '/index.html" aria-label="Hap ' + m.name + '"><iframe src="' + m.folder + '/index.html?embed" title="Parapamje ' + m.id + '" loading="lazy" tabindex="-1"></iframe></a>' +
+      '<div class="body"><div class="title"><span class="id">' + m.id + '</span><h2>' + m.name + '</h2></div>' +
+      '<p>' + m.idea + '</p>' +
+      '<div class="swatches">' + m.colors.map(function (c) { return '<i style="background:' + c + '"></i>'; }).join('') + '</div>' +
+      '<div class="fonts">' + m.fonts + '</div>' +
+      '<div class="pages">' + PAGES.map(function (p, i) { return '<a class="' + (i === 0 ? 'main' : '') + '" href="' + m.folder + '/' + p[0] + '.html">' + p[1] + '</a>'; }).join('') + '</div></div></article>';
+  }).join('');
+
+  function fit() {
+    document.querySelectorAll('.preview').forEach(function (p) {
+      var f = p.firstElementChild, s = p.clientWidth / 1280;
+      f.style.transform = 'scale(' + s + ')';
+    });
+  }
+  window.addEventListener('resize', fit); fit();
+</script>
+</body>
+</html>

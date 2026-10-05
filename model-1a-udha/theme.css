@@ -1,0 +1,53 @@
+/* Model 1a — Udha · The Path
+   Adriatic blue + terracotta, friendly rounded geometry, full-bleed night-to-day landscape hero. */
+:root {
+  --bg: #FBF8F2; --bg-alt: #F3E9D7; --surface: #FFFFFF; --ink: #0F2A3D; --muted: #55656f; --line: rgba(15,42,61,.14);
+  --brand: #1F6FB2; --cta: #E8743F; --cta-ink: #0F2A3D; --accent: #E8743F; --eyebrow: #1F6FB2;
+  --dark: #0F2A3D; --dark-ink: #FBF8F2;
+  --header-bg: #FBF8F2; --header-ink: #0F2A3D;
+  --font-title: 'Bricolage Grotesque', sans-serif; --font-body: 'Figtree', sans-serif;
+  --title-w: 800; --title-ls: -.025em; --title-tt: none;
+  --radius: 20px; --btn-radius: 14px; --shadow: 0 18px 40px rgba(15,42,61,.14);
+  --s1: #bfe0f5; --s2: #F3E9D7; --s3: #E8743F; --s4: #8fbbdc; --s5: #1F6FB2; --s6: #0F2A3D; --s7: #5aa0d6; --s8: #E8743F; --s9: #FBF8F2;
+}
+.btn--primary { box-shadow: 0 6px 0 rgba(15,42,61,.18); }
+.btn--primary:hover { box-shadow: 0 9px 0 rgba(15,42,61,.18); }
+.tour { box-shadow: 0 2px 0 var(--line), 0 12px 30px rgba(15,42,61,.07); }
+.tour__img { aspect-ratio: 16/11; }
+.feature, .review { box-shadow: 0 2px 0 var(--line); }
+.feature .ico { background: var(--brand); }
+.section--alt .review, .section--alt .feature { background: #fff; }
+.cta-band { background: linear-gradient(135deg, #1F6FB2, #0F2A3D); }
+
+/* Hero: full-bleed landscape (night palette scoped to the hero) */
+.hero { position: relative; min-height: min(88vh, 780px); display: flex; align-items: center; color: #fff; overflow: hidden;
+  --s1: #0F2A3D; --s2: #2f7ab9; --s3: #E8743F; --s4: #1d5a8f; --s5: #15436b; --s6: #0b2133; }
+.hero .hero__bg { position: absolute; inset: 0; }
+.hero__shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11,33,51,.88) 0%, rgba(11,33,51,.35) 55%, rgba(11,33,51,0) 100%); }
+.hero__trail { position: absolute; right: 8%; top: 0; height: 100%; width: auto; opacity: .9; }
+.hero__inner { position: relative; padding: 110px 0; }
+.hero__inner > * { max-width: 640px; }
+.hero .eyebrow { color: #F3E9D7; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+.hero .btn--ghost { color: #fff; }
+@media (max-width: 700px) { .hero__trail { opacity: .35; right: -20%; } .hero__shade { background: rgba(11,33,51,.6); } }
+
+/* Inner page header */
+.page-hero { position: relative; overflow: hidden; background: #0F2A3D; color: #fff;
+  --s1: #0F2A3D; --s2: #2f7ab9; --s3: #E8743F; --s4: #1d5a8f; --s5: #15436b; --s6: #0b2133; }
+.page-hero .page-hero__bg { position: absolute; inset: 0; opacity: .55; }
+.page-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11,33,51,.92), rgba(11,33,51,.2)); }
+.page-hero__inner { position: relative; z-index: 2; }
+.page-hero__inner > * { max-width: 640px; }
+.page-hero .eyebrow { color: #F3E9D7; }
+.page-hero h1 { font-size: clamp(38px, 5.4vw, 66px); }
+.portrait { border-radius: 28px; }
+.dlg__img { aspect-ratio: 16/7; }
+
+@media (max-width: 700px) {
+  .hero { min-height: 0; }
+  .hero__inner { padding: 56px 0 48px; }
+  .hero__shade { background: linear-gradient(180deg, rgba(11,33,51,.55), rgba(11,33,51,.82)); }
+  .hero__trail { right: -30%; opacity: .3; }
+  .page-hero::after { background: rgba(11,33,51,.7); }
+}

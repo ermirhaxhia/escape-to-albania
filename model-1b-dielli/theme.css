@@ -1,0 +1,62 @@
+/* Model 1b — Dielli mbi det · Sun over the Sea
+   Sea teal, sun amber and olive on warm lime-wash. Serif headlines, centred composition, soft pills. */
+:root {
+  --bg: #F6F1E7; --bg-alt: #ECE4D2; --surface: #FFFFFF; --ink: #1D2B2A; --muted: #5b6b69; --line: rgba(29,43,42,.14);
+  --brand: #1C7A86; --cta: #F0A23A; --cta-ink: #1D2B2A; --accent: #F0A23A; --eyebrow: #1C7A86;
+  --dark: #17383B; --dark-ink: #F6F1E7;
+  --header-bg: #17383B; --header-ink: #F6F1E7; --header-border: 0;
+  --font-title: 'Young Serif', serif; --font-body: 'Instrument Sans', sans-serif;
+  --title-w: 400; --title-ls: -.005em; --title-tt: none;
+  --radius: 30px; --btn-radius: 999px; --shadow: 0 20px 44px rgba(23,56,59,.16);
+  --s1: #F6F1E7; --s2: #f8cf8f; --s3: #F0A23A; --s4: #9bb08a; --s5: #3f8f98; --s6: #17383B; --s7: #2a8a96; --s8: #F0A23A; --s9: #F6F1E7;
+}
+body { font-size: 17.5px; }
+.eyebrow { letter-spacing: .22em; font-size: 12px; }
+.nav a:hover, .nav a[aria-current="page"] { border-color: #F0A23A; }
+.nav .btn--primary { color: #1D2B2A; }
+.chip { border-color: var(--brand); color: var(--brand); }
+.chip[aria-pressed="true"] { background: var(--brand); color: #fff; }
+.tour { padding: 12px; box-shadow: 0 1px 0 var(--line); }
+.tour__img { border-radius: 22px; aspect-ratio: 5/4; }
+.tour__body { padding: 20px 12px 12px; }
+.tour__tag { background: #F6F1E7; }
+.feature, .review { border-radius: 28px; }
+.feature .ico { background: #F0A23A; color: #17383B; font-family: var(--font-title); }
+.section--alt .review, .section--alt .feature { background: #fff; }
+.step::before { color: #F0A23A; }
+.cta-band { background: #F0A23A; color: #1D2B2A; }
+.cta-band .btn--primary { background: #17383B; color: #fff; }
+.stat b { color: var(--brand); }
+.portrait { border-radius: 999px 999px 28px 28px; }
+
+/* Hero: centred, half-sun + horizon lines, wide coast strip below */
+.hero { padding: 56px 0 clamp(48px, 6vw, 80px); text-align: center; background: linear-gradient(#F6F1E7, #F6F1E7); }
+.hero__sunart { display: block; width: min(300px, 62vw); margin: 0 auto 18px; }
+.hero__inner > * { margin-inline: auto; }
+.hero h1 { max-width: 15ch; font-size: clamp(42px, 6.6vw, 84px); }
+.hero .lead { margin-top: 22px; text-align: center; }
+.hero__cta { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+.hero__strip { margin-top: clamp(40px, 6vw, 72px); aspect-ratio: 21/8; border-radius: 36px; min-height: 220px; }
+.hero .btn--ghost { color: #17383B; }
+
+/* Inner page header: deep teal with a rising sun */
+.page-hero { position: relative; overflow: hidden; background: #17383B; color: #F6F1E7; text-align: center; padding-bottom: clamp(130px, 14vw, 170px); }
+.page-hero .page-hero__bg { display: none; }
+.page-hero::after { content: ""; position: absolute; left: 50%; bottom: 0; width: 200px; height: 100px; transform: translateX(-50%); background: #F0A23A; border-radius: 200px 200px 0 0; }
+.page-hero__inner > * { margin-inline: auto; }
+.page-hero .eyebrow { color: #F0A23A; }
+.page-hero .lead { text-align: center; }
+.page-hero + .section { margin-top: 0; }
+.page-hero h1 { font-size: clamp(38px, 5.4vw, 66px); }
+
+@media (max-width: 700px) {
+  .hero { padding: 28px 0 40px; }
+  .hero__sunart { width: 190px; margin-bottom: 12px; }
+  .hero h1 { font-size: clamp(34px, 10.4vw, 46px); }
+  .hero .lead { text-align: center; }
+  .hero__strip { aspect-ratio: 4/3; min-height: 0; border-radius: 26px; margin-top: 32px; }
+  .tour { padding: 10px; }
+  .tour__body { padding: 16px 8px 8px; }
+  .page-hero { padding-bottom: 104px; }
+  .page-hero::after { width: 150px; height: 75px; border-radius: 150px 150px 0 0; }
+}
