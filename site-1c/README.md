@@ -23,6 +23,8 @@ site-1c/
 │   ├── _headers            Siguria + noindex për /admin
 │   ├── robots.txt, sitemap.xml
 ├── functions/api/requests.js   Formulari i rezervimit → Cloudflare KV
+├── functions/api/analytics.js  Burimet e vizitorëve nga Cloudflare Web Analytics (për admin-in)
+├── tools/admin_bundle.py       Hap/mbyll kodin e admin-it brenda admin/index.html për ta ndryshuar
 └── wrangler.toml
 ```
 
@@ -39,7 +41,14 @@ site-1c/
 4. **Fjalëkalimi i admin-it për API-në:** Settings → Variables and Secrets → shto `ADMIN_TOKEN` (Encrypted).
 5. **Mbro /admin:** Zero Trust → Access → Applications → Self-hosted, domain `escapetoalbania.com/admin*`
    (dhe `/api/requests` për GET), lejo vetëm email-et e agjencisë.
-6. Lidh domain-in te Custom domains. Nëse domain-i nuk është `escapetoalbania.com`, ndrysho URL-të te
+6. **Nga vijnë vizitorët (Analytics në admin):**
+   - Te projekti Pages: **Metrics → Web Analytics → Enable**. Cloudflare e shton vetë kodin në faqe.
+   - Merr **site tag**-un (Web Analytics → faqja → Manage site) dhe **Account ID**-në (në faqen kryesore të llogarisë).
+   - Krijo një API token (My Profile → API Tokens) me lejen **Account → Account Analytics → Read**.
+   - Shtoji si variabla te projekti: `CF_ACCOUNT_ID`, `CF_WA_SITE_TAG` dhe `CF_API_TOKEN` (Encrypted).
+   - Shto edhe `/api/analytics` te aplikacioni i Cloudflare Access, si `/admin`.
+   Pa këto, seksioni "Where visitors come from" te Analytics tregon të dhëna shembull.
+7. Lidh domain-in te Custom domains. Nëse domain-i nuk është `escapetoalbania.com`, ndrysho URL-të te
    `robots.txt` dhe `sitemap.xml`.
 
 Provë lokale: `npx wrangler pages dev public --kv REQUESTS --binding ADMIN_TOKEN=test` nga ky folder.
