@@ -1,0 +1,4 @@
+# Netlify preview of the production site (design 1c). The real host is Cloudflare Pages (see site-1c/README.md);
+# the booking API in site-1c/functions only runs on Cloudflare, so the form shows its error message here.
+[build]
+  publish = "site-1c/public"
