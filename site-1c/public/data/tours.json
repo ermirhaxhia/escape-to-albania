@@ -1,0 +1,426 @@
+[
+  {
+    "id": "t1",
+    "slug": "theth",
+    "title": "Theth Valley & Grunas Waterfall",
+    "short": "Over the Albanian Alps by road, then a gentle walk to the Grunas waterfall and the Blue Eye of Theth.",
+    "region": "North",
+    "tags": "north",
+    "hours": "12",
+    "price": "95",
+    "max": "4",
+    "published": true,
+    "featured": true,
+    "cover": "",
+    "coverAlt": "",
+    "scene": "mountain",
+    "seed": 3,
+    "steps": [
+      {
+        "t": "07:30",
+        "s": "Pickup in Tirana or Shkodër"
+      },
+      {
+        "t": "",
+        "s": "Mountain road to Theth with photo stops"
+      },
+      {
+        "t": "",
+        "s": "Walk to Grunas waterfall & the stone church"
+      },
+      {
+        "t": "",
+        "s": "Lunch in a family guesthouse"
+      },
+      {
+        "t": "",
+        "s": "Back by 19:30"
+      }
+    ],
+    "incl": [
+      "Private vehicle & fuel",
+      "Local guide",
+      "Lunch at a guesthouse",
+      "Hotel pickup"
+    ],
+    "seo": {
+      "title": "Theth Valley & Grunas Waterfall | Escape to Albania",
+      "desc": "Over the Albanian Alps by road, then a gentle walk to the Grunas waterfall and the Blue Eye of Theth.",
+      "slug": "theth",
+      "keyword": "",
+      "canonical": "",
+      "noindex": false
+    }
+  },
+  {
+    "id": "t2",
+    "slug": "koman",
+    "title": "Lake Koman & Valbona Ferry",
+    "short": "Three hours on a ferry between sheer cliffs: one of the most beautiful boat rides in Europe.",
+    "region": "North",
+    "tags": "north",
+    "hours": "11",
+    "price": "90",
+    "max": "4",
+    "published": true,
+    "featured": false,
+    "cover": "",
+    "coverAlt": "",
+    "scene": "lake",
+    "seed": 5,
+    "steps": [
+      {
+        "t": "06:30",
+        "s": "Early start from Tirana"
+      },
+      {
+        "t": "",
+        "s": "Drive to Koman through Mirdita"
+      },
+      {
+        "t": "",
+        "s": "Ferry through the fjord-like gorge"
+      },
+      {
+        "t": "",
+        "s": "Swim and lunch at the lake"
+      },
+      {
+        "t": "",
+        "s": "Return by evening"
+      }
+    ],
+    "incl": [
+      "Private vehicle & fuel",
+      "Local guide",
+      "Ferry ticket",
+      "Hotel pickup"
+    ],
+    "seo": {
+      "title": "Lake Koman & Valbona Ferry | Escape to Albania",
+      "desc": "Three hours on a ferry between sheer cliffs: one of the most beautiful boat rides in Europe.",
+      "slug": "koman",
+      "keyword": "",
+      "canonical": "",
+      "noindex": false
+    }
+  },
+  {
+    "id": "t3",
+    "slug": "shkoder",
+    "title": "Shkodër, Rozafa & the Lake",
+    "short": "The old Catholic heart of Albania: Rozafa castle, Marubi photo museum and a sunset over the lake.",
+    "region": "North · Culture",
+    "tags": "north culture",
+    "hours": "9",
+    "price": "65",
+    "max": "4",
+    "published": true,
+    "featured": false,
+    "cover": "",
+    "coverAlt": "",
+    "scene": "lake",
+    "seed": 9,
+    "steps": [
+      {
+        "t": "09:00",
+        "s": "Pickup in Tirana"
+      },
+      {
+        "t": "",
+        "s": "Rozafa castle and its legend"
+      },
+      {
+        "t": "",
+        "s": "Marubi National Museum of Photography"
+      },
+      {
+        "t": "",
+        "s": "Fish lunch at Lake Shkodër"
+      },
+      {
+        "t": "",
+        "s": "Sunset at Shiroka"
+      }
+    ],
+    "incl": [
+      "Private vehicle & fuel",
+      "Local guide",
+      "Castle entrance",
+      "Hotel pickup"
+    ],
+    "seo": {
+      "title": "Shkodër, Rozafa & the Lake | Escape to Albania",
+      "desc": "The old Catholic heart of Albania: Rozafa castle, Marubi photo museum and a sunset over the lake.",
+      "slug": "shkoder",
+      "keyword": "",
+      "canonical": "",
+      "noindex": false
+    }
+  },
+  {
+    "id": "t4",
+    "slug": "tirana",
+    "title": "Tirana Food & Bunk’Art Walk",
+    "short": "The capital through its kitchens and its history: byrek at dawn, Blloku, the Pyramid and the bunker museum.",
+    "region": "City · Food",
+    "tags": "city culture",
+    "hours": "6",
+    "price": "55",
+    "max": "4",
+    "published": true,
+    "featured": false,
+    "cover": "",
+    "coverAlt": "",
+    "scene": "city",
+    "seed": 2,
+    "steps": [
+      {
+        "t": "10:00",
+        "s": "Meet at Skanderbeg Square"
+      },
+      {
+        "t": "",
+        "s": "Old bazaar & Et’hem Bey mosque"
+      },
+      {
+        "t": "",
+        "s": "Tasting stops: byrek, qofte, raki"
+      },
+      {
+        "t": "",
+        "s": "Bunk’Art 1 museum"
+      },
+      {
+        "t": "",
+        "s": "Coffee in Blloku"
+      }
+    ],
+    "incl": [
+      "Local guide",
+      "All food tastings",
+      "Museum entrance",
+      "Walking route map"
+    ],
+    "seo": {
+      "title": "Tirana Food & Bunk’Art Walk | Escape to Albania",
+      "desc": "The capital through its kitchens and its history: byrek at dawn, Blloku, the Pyramid and the bunker museum.",
+      "slug": "tirana",
+      "keyword": "",
+      "canonical": "",
+      "noindex": false
+    }
+  },
+  {
+    "id": "t5",
+    "slug": "berat",
+    "title": "Berat, the City of a Thousand Windows",
+    "short": "A UNESCO town of white Ottoman houses stacked up a hillside, with a living castle on top.",
+    "region": "Culture",
+    "tags": "culture",
+    "hours": "10",
+    "price": "75",
+    "max": "4",
+    "published": true,
+    "featured": true,
+    "cover": "",
+    "coverAlt": "",
+    "scene": "castle",
+    "seed": 4,
+    "steps": [
+      {
+        "t": "08:30",
+        "s": "Pickup in Tirana"
+      },
+      {
+        "t": "",
+        "s": "Berat castle & Onufri museum"
+      },
+      {
+        "t": "",
+        "s": "Walk across the Gorica bridge"
+      },
+      {
+        "t": "",
+        "s": "Lunch with a view over Mangalem"
+      },
+      {
+        "t": "",
+        "s": "Wine tasting at a family cellar"
+      }
+    ],
+    "incl": [
+      "Private vehicle & fuel",
+      "Local guide",
+      "Wine tasting",
+      "Hotel pickup"
+    ],
+    "seo": {
+      "title": "Berat, the City of a Thousand Windows | Escape to Albania",
+      "desc": "A UNESCO town of white Ottoman houses stacked up a hillside, with a living castle on top.",
+      "slug": "berat",
+      "keyword": "",
+      "canonical": "",
+      "noindex": false
+    }
+  },
+  {
+    "id": "t6",
+    "slug": "gjirokaster",
+    "title": "Gjirokastër & the Blue Eye",
+    "short": "The stone city and its fortress, then a swim at the cold, impossibly blue spring of Syri i Kaltër.",
+    "region": "Culture · South",
+    "tags": "culture coast",
+    "hours": "13",
+    "price": "85",
+    "max": "4",
+    "published": true,
+    "featured": false,
+    "cover": "",
+    "coverAlt": "",
+    "scene": "castle",
+    "seed": 7,
+    "steps": [
+      {
+        "t": "07:00",
+        "s": "Start from Tirana"
+      },
+      {
+        "t": "",
+        "s": "Gjirokastër bazaar & Zekate house"
+      },
+      {
+        "t": "",
+        "s": "Castle & the Cold War tunnel"
+      },
+      {
+        "t": "",
+        "s": "Lunch in a stone house"
+      },
+      {
+        "t": "",
+        "s": "The Blue Eye spring"
+      }
+    ],
+    "incl": [
+      "Private vehicle & fuel",
+      "Local guide",
+      "Castle entrance",
+      "Hotel pickup"
+    ],
+    "seo": {
+      "title": "Gjirokastër & the Blue Eye | Escape to Albania",
+      "desc": "The stone city and its fortress, then a swim at the cold, impossibly blue spring of Syri i Kaltër.",
+      "slug": "gjirokaster",
+      "keyword": "",
+      "canonical": "",
+      "noindex": false
+    }
+  },
+  {
+    "id": "t7",
+    "slug": "ksamil",
+    "title": "Ksamil & Butrint",
+    "short": "Ancient Butrint in the morning, turquoise water at Ksamil in the afternoon, grilled fish in between.",
+    "region": "Coast",
+    "tags": "coast culture",
+    "hours": "11",
+    "price": "85",
+    "max": "4",
+    "published": true,
+    "featured": true,
+    "cover": "",
+    "coverAlt": "",
+    "scene": "coast",
+    "seed": 6,
+    "steps": [
+      {
+        "t": "07:30",
+        "s": "Pickup from Sarandë or Tirana"
+      },
+      {
+        "t": "",
+        "s": "Butrint archaeological park"
+      },
+      {
+        "t": "",
+        "s": "Ksamil beach & boat to the islets"
+      },
+      {
+        "t": "",
+        "s": "Seafood lunch"
+      },
+      {
+        "t": "",
+        "s": "Sunset on the Sarandë promenade"
+      }
+    ],
+    "incl": [
+      "Private vehicle & fuel",
+      "Local guide",
+      "Butrint entrance",
+      "Hotel pickup"
+    ],
+    "seo": {
+      "title": "Ksamil & Butrint | Escape to Albania",
+      "desc": "Ancient Butrint in the morning, turquoise water at Ksamil in the afternoon, grilled fish in between.",
+      "slug": "ksamil",
+      "keyword": "",
+      "canonical": "",
+      "noindex": false
+    }
+  },
+  {
+    "id": "t8",
+    "slug": "llogara",
+    "title": "Llogara Pass & Himara Riviera",
+    "short": "Pine forests at 1,000 m, then switchbacks down to the Ionian Sea and the quiet beaches of Dhërmi and Himara.",
+    "region": "Coast",
+    "tags": "coast",
+    "hours": "11",
+    "price": "80",
+    "max": "4",
+    "published": true,
+    "featured": false,
+    "cover": "",
+    "coverAlt": "",
+    "scene": "road",
+    "seed": 8,
+    "steps": [
+      {
+        "t": "08:00",
+        "s": "Pickup in Vlorë"
+      },
+      {
+        "t": "",
+        "s": "Llogara national park viewpoint"
+      },
+      {
+        "t": "",
+        "s": "Dhërmi old village"
+      },
+      {
+        "t": "",
+        "s": "Swim at Gjipe or Livadhi"
+      },
+      {
+        "t": "",
+        "s": "Taverna lunch in Himara"
+      }
+    ],
+    "incl": [
+      "Private vehicle & fuel",
+      "Local guide",
+      "Beach stops",
+      "Hotel pickup"
+    ],
+    "seo": {
+      "title": "Llogara Pass & Himara Riviera | Escape to Albania",
+      "desc": "Pine forests at 1,000 m, then switchbacks down to the Ionian Sea and the quiet beaches of Dhërmi and Himara.",
+      "slug": "llogara",
+      "keyword": "",
+      "canonical": "",
+      "noindex": false
+    }
+  }
+]

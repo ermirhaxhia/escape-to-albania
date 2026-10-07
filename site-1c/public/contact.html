@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact · Escape to Albania</title>
+<meta name="theme-color" content="#FAF7F0">
+<meta name="description" content="Small-group days with a local guide across Albania. Private tours for up to four guests.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/base.css">
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/site.css">
+<script src="/assets/model.js"></script>
+<script src="/assets/app.js" defer></script>
+</head>
+<body class="model-1c page-contact">
+
+<header class="site-header"><div class="container">
+  <a href="/" data-logo="color"></a>
+  <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span></button>
+  <nav class="nav" aria-label="Main">
+    <a href="/">Home</a><a href="/tours">Tours</a><a href="/about">About me</a><a href="/blog">Journal</a><a href="/contact">Contact</a>
+    <a class="btn btn--primary" href="/contact">Book a day</a>
+  </nav>
+</div></header>
+<main>
+<section class="page-hero">
+  <div class="page-hero__bg" data-scene="lake" data-seed="31"></div>
+  <div class="container page-hero__inner"><div class="eyebrow">Contact</div><h1>Book a day.</h1><p class="lead">Tell me when you’re in Albania and what you’d love to see. I reply within 24 hours, usually faster.</p></div>
+</section>
+<section class="section">
+  <div class="container form-wrap">
+    <div class="reveal">
+      <form class="form" data-booking>
+        <div style="position:absolute;left:-9999px" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <div class="field"><label for="name">Your name</label><input id="name" name="name" required autocomplete="name" placeholder="Jane Smith"></div>
+        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" inputmode="email" required autocomplete="email" placeholder="jane@email.com"></div>
+        <div class="field full"><label for="tour">Which day interests you?</label><select id="tour" name="tour"><option value="custom">A custom day / not sure yet</option></select></div>
+        <div class="field"><label for="date">Preferred date</label><input id="date" name="date" type="date"></div>
+        <div class="field"><label for="guests">Guests</label><select id="guests" name="guests"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
+        <div class="field"><label for="wa">WhatsApp (optional)</label><input id="wa" name="wa" type="tel" inputmode="tel" autocomplete="tel" placeholder="+44 7700 900000"></div>
+        <div class="field"><label for="pickup">Where are you staying? (optional)</label><input id="pickup" name="pickup" placeholder="Hotel, city"></div>
+        <div class="field full"><label for="msg">Anything I should know?</label><textarea id="msg" name="msg" placeholder="Where you’re staying, what you love, how active you are…"></textarea></div>
+        <div class="full"><button class="btn btn--primary" type="submit">Send request</button> <p class="form__note" style="margin-top:14px">No payment now. I’ll reply with a plan and a fixed price.</p><p class="form__error" role="alert" hidden>Sorry, your request didn’t go through. Please try again, or write to <a href="mailto:hello@escapetoalbania.com">hello@escapetoalbania.com</a>.</p></div>
+      </form>
+      <div class="success"><div class="tick">✓</div><h3>Thank you, <span data-name></span>!</h3><p>Your request is in (reference <b data-ref></b>). You’ll hear back within 24 hours, usually faster.</p></div>
+    </div>
+    <aside class="contact-card reveal">
+      <div class="item"><i>✉</i><div><b>Email</b><a href="mailto:hello@escapetoalbania.com">hello@escapetoalbania.com</a></div></div>
+      <div class="item"><i>☎</i><div><b>WhatsApp</b><a href="https://wa.me/355690000000">+355 69 000 0000 · tap to chat</a></div></div>
+      <div class="item"><i>⌂</i><div><b>Based in</b><span>Tirana, Albania. Pickups in Tirana, Durrës, Shkodër, Vlorë &amp; Sarandë.</span></div></div>
+      <div class="item"><i>@</i><div><b>Instagram</b><span>@escapetoalbania</span></div></div>
+    </aside>
+  </div>
+</section>
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__head reveal"><div><div class="eyebrow">Good to know</div><h2>Questions, answered.</h2></div></div>
+    <div class="faq reveal">
+      <details open><summary>How many people can join?</summary><p>One to four guests. That’s the whole idea: a private day, never a crowd.</p></details>
+      <details><summary>What is included in the price?</summary><p>Private transport, fuel, your guide and the entrance fees named on each tour. Lunch is included on most days and clearly marked.</p></details>
+      <details><summary>Can we change the route?</summary><p>Yes. Each day is a starting point. Tell me what to add or skip and I’ll adjust the plan and price.</p></details>
+      <details><summary>What if the weather is bad?</summary><p>I watch the forecast for you. If the plan doesn’t work, we switch days or choose a better route at no extra cost.</p></details>
+      <details><summary>How do I pay?</summary><p>A small deposit holds the date, and the balance is paid on the day by cash or card.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer"><div class="container">
+  <div class="cols">
+    <div><a href="/" data-logo="mono"></a><p class="tagline">Small-group days with a local guide. Private, unhurried, and a little bit personal.</p></div>
+    <div><h4>Explore</h4><ul><li><a href="/">Home</a></li><li><a href="/tours">Tours</a></li><li><a href="/about">About me</a></li><li><a href="/about#reviews">Reviews</a></li><li><a href="/blog">Journal</a></li><li><a href="/contact">Contact</a></li></ul></div>
+    <div><h4>Popular days</h4><ul><li><a href="/contact?tour=theth">Theth Valley</a></li><li><a href="/contact?tour=berat">Berat</a></li><li><a href="/contact?tour=ksamil">Ksamil &amp; Butrint</a></li><li><a href="/contact?tour=tirana">Tirana food walk</a></li></ul></div>
+    <div><h4>Say hello</h4><ul><li><a href="mailto:hello@escapetoalbania.com">hello@escapetoalbania.com</a></li><li><a href="https://wa.me/355690000000">WhatsApp +355 69 000 0000</a></li><li>@escapetoalbania</li></ul></div>
+  </div>
+  <div class="legal"><span>© <span data-year>2026</span> Escape to Albania. All rights reserved.</span><span>Tirana, Albania</span></div>
+</div></footer>
+</body>
+</html>

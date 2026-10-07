@@ -1,0 +1,107 @@
+[
+  {
+    "id": "a6",
+    "slug": "theth-with-four-friends-from-berlin",
+    "title": "Theth with four friends from Berlin",
+    "status": "Published",
+    "date": "2026-09-28",
+    "cat": "Group tours",
+    "tags": "theth, group tour, alps",
+    "author": "Ardit Kola",
+    "excerpt": "Example post: how a day trip report from a group tour looks on the journal. Replace it with your own story and photos from the admin.",
+    "cover": "",
+    "featuredAlt": "",
+    "scene": "mountain",
+    "seed": 8,
+    "tour": "theth",
+    "group": {
+      "size": 4,
+      "from": "Berlin, Germany",
+      "month": "September 2026"
+    },
+    "body": "<p><em>This is an example post that shows how a group tour report looks on the website. Replace the text and add real photos from the admin.</em></p><p>We left Shkodër at 07:30 with coffee in hand. Four friends, one car, and a forecast that promised sun over the Alps.</p><h2>The road up</h2><p>We stopped at the Thore pass for the first view of the valley. Nobody wanted to get back in the car.</p><h2>Grunas waterfall</h2><p>An easy walk through the beech forest, a cold swim for the brave ones, and a long lunch at a family guesthouse.</p><blockquote>“The best day of our whole trip.” (Lena, from the group)</blockquote><p>Want a day like this? <a href=\"/tours/theth\">See the Theth tour</a> or <a href=\"/contact?tour=theth\">ask for your dates</a>.</p>",
+    "seo": {
+      "title": "Theth with four friends from Berlin | Escape to Albania",
+      "desc": "A group tour report from the Theth valley: the Thore pass, the Grunas waterfall and lunch at a family guesthouse.",
+      "slug": "theth-with-four-friends-from-berlin",
+      "keyword": "theth group tour",
+      "canonical": "",
+      "noindex": false
+    }
+  },
+  {
+    "id": "a1",
+    "slug": "7-days-in-albania",
+    "title": "7 days in Albania: a realistic itinerary",
+    "status": "Published",
+    "date": "2026-09-14",
+    "cat": "Itineraries",
+    "tags": "itinerary, road trip, first time",
+    "author": "Ardit Kola",
+    "excerpt": "Most itineraries try to fit the whole country into a week. This one leaves time for long lunches and slow mornings.",
+    "cover": "",
+    "featuredAlt": "Mountain road towards Theth in the morning",
+    "scene": "road",
+    "seed": 11,
+    "tour": "",
+    "body": "<p>Most itineraries try to fit the whole country into a week. This one doesn’t. It leaves time for long lunches and slow mornings, which is how Albania is best seen.</p><h2>Day 1–2: Tirana and Berat</h2><p>Land in Tirana, walk the centre in the evening, and drive to <a href=\"/tours/berat\">Berat</a> the next morning.</p><h2>Day 3–4: The Alps</h2><p>Theth needs two nights. The road is long, and the valley deserves more than a quick photo.</p><blockquote>Book the guesthouse before you book the car.</blockquote><h2>Day 5–7: The coast</h2><ul><li>Gjirokastër on the way south</li><li>Butrint early in the morning</li><li>A last swim in Ksamil</li></ul>",
+    "seo": {
+      "title": "7 Days in Albania: A Realistic Itinerary from a Local Guide",
+      "desc": "A 7-day Albania itinerary that leaves time to breathe: Tirana, Berat, the Theth valley and the southern coast, with tips from a local guide.",
+      "slug": "7-days-in-albania",
+      "keyword": "albania itinerary",
+      "canonical": "",
+      "noindex": false
+    }
+  },
+  {
+    "id": "a2",
+    "slug": "is-theth-worth-it",
+    "title": "Is Theth worth it? A local’s guide",
+    "status": "Published",
+    "date": "2026-08-30",
+    "cat": "Destinations",
+    "tags": "theth, alps, hiking",
+    "author": "Ardit Kola",
+    "excerpt": "Short answer: yes, if you give it at least one night. Here is how to get there and when to go.",
+    "cover": "",
+    "featuredAlt": "Grunas waterfall",
+    "scene": "mountain",
+    "seed": 4,
+    "tour": "theth",
+    "body": "<p>Short answer: yes, if you give it at least one night.</p><h2>Getting there</h2><p>The road from Shkodër is paved now, but it is still a mountain road.</p><figure data-alt=\"\"><div style=\"aspect-ratio:16/9;border-radius:6px;background:repeating-linear-gradient(135deg,#D3E4F2 0 14px,#E3EEF7 14px 28px)\"></div><figcaption style=\"font-size:13px;color:#667085;margin-top:6px\">The last bend before the valley.</figcaption></figure><h2>When to go</h2><p>June to September. In October the guesthouses start to close.</p>",
+    "seo": {
+      "title": "Is Theth Worth It? A Local’s Honest Guide to the Valley",
+      "desc": "Is Theth worth the long drive? A local guide on getting there, when to go, where to sleep and whether one day is enough for the Theth valley.",
+      "slug": "is-theth-worth-it",
+      "keyword": "theth",
+      "canonical": "",
+      "noindex": false
+    }
+  },
+  {
+    "id": "a3",
+    "slug": "what-to-eat-in-albania",
+    "title": "What to eat in Albania (and where)",
+    "status": "Scheduled",
+    "date": "2026-10-15",
+    "cat": "Food",
+    "tags": "food, byrek, restaurants",
+    "author": "Elira Kola",
+    "excerpt": "Albanian food is simple and seasonal. Here is what to order, region by region.",
+    "cover": "",
+    "featuredAlt": "Plate of byrek and yoghurt",
+    "scene": "city",
+    "seed": 5,
+    "tour": "",
+    "body": "<p>Albanian food is simple and seasonal. Here is what to order, region by region.</p><h2>In the north</h2><p>Mountain lamb, fresh cheese and flija.</p><h2>On the coast</h2><p>Grilled fish, mussels from Butrint lagoon.</p>",
+    "seo": {
+      "title": "What to Eat in Albania: Dishes to Try and Where to Find Them",
+      "desc": "From byrek to Butrint mussels: what to eat in Albania, region by region, with the places a local guide actually goes to.",
+      "slug": "what-to-eat-in-albania",
+      "keyword": "what to eat in albania",
+      "canonical": "",
+      "noindex": false
+    }
+  }
+]
