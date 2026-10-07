@@ -55,6 +55,6 @@ Provë lokale: `npx wrangler pages dev public --kv REQUESTS --binding ADMIN_TOKE
   `Scheduled` del vetë kur vjen data.
 - Foto: vendosi te `public/media/` dhe shkruaj `"cover": "/media/emri.jpg"`.
 
-**Kujdes:** `admin/index.html` është prototipi i CMS-së (dizajn i klikueshëm). Të dhënat aty janë shembuj
+**Kujdes:** `admin/index.html` hap aplikacionin e admin-it në ekran të plotë (desktop, ose pamjen mobile në telefon), duke filluar nga Sign in. Është ende dizajn i klikueshëm: Të dhënat aty janë shembuj
 dhe nuk ruhen ende. Hapi tjetër është ta lidhim admin-in me `/api/requests` (kërkesat vijnë tashmë aty)
 dhe me ruajtjen e tureve/postimeve (p.sh. Cloudflare D1 ose commit-e në GitHub që rindërtojnë faqen).
