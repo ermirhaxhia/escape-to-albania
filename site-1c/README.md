@@ -22,7 +22,12 @@ site-1c/
 │   ├── _redirects          URL të bukura për /blog/<slug> dhe /tours/<slug>
 │   ├── _headers            Siguria + noindex për /admin
 │   ├── robots.txt, sitemap.xml
-├── functions/api/requests.js   Formulari i rezervimit → Cloudflare KV
+├── functions/api/requests.js   Formulari i rezervimit (POST) → D1
+├── functions/api/admin/        requests (GET lista) dhe requests/[id] (PATCH statusi, shënimet) për admin-in
+├── functions/api/tours.js      Turet nga D1 (GET ?lang=en)
+├── functions/api/config.js     Cilësime publike (limiti i grupit) nga D1
+├── functions/_lib/http.js      Ndihmëse: JSON, pastrim teksti, mbrojtja me ADMIN_TOKEN
+├── db/                         Skema D1, seed, README
 ├── functions/api/analytics.js  Burimet e vizitorëve nga Cloudflare Web Analytics (për admin-in)
 ├── tools/admin_bundle.py       Hap/mbyll kodin e admin-it brenda admin/index.html për ta ndryshuar
 └── wrangler.toml
@@ -36,9 +41,8 @@ site-1c/
    - **Build command:** (bosh)
    - **Root directory:** `site-1c`
    - **Build output directory:** `public`
-3. **Rezervimet:** Workers & Pages → KV → krijo një namespace (p.sh. `escape-requests`).
-   Pastaj te projekti: Settings → Bindings → **KV namespace**, emri i variablës `REQUESTS`.
-4. **Fjalëkalimi i admin-it për API-në:** Settings → Variables and Secrets → shto `ADMIN_TOKEN` (Encrypted).
+3. **Databaza:** shih `db/README.md` (krijo D1, migrimi, seed). Lidhja `DB` është te `wrangler.toml`.
+4. **Fjalëkalimi i admin-it:** Settings → Variables and Secrets → shto `ADMIN_TOKEN` (Encrypted), një fjalëkalim i gjatë. Ky është fjalëkalimi që shkruan te hyrja e `/admin/` (email-i mund të jetë çfarëdo për beta). Pa të, API-ja e admin-it kthen 503.
 5. **Mbro /admin:** Zero Trust → Access → Applications → Self-hosted, domain `escapetoalbania.com/admin*`
    (dhe `/api/requests` për GET), lejo vetëm email-et e agjencisë.
 6. **Nga vijnë vizitorët (Analytics në admin):**
@@ -66,5 +70,5 @@ Provë lokale: `npx wrangler pages dev public --kv REQUESTS --binding ADMIN_TOKE
 - `reviews.json` dhe `articles.json` janë bosh. Seksioni i vlerësimeve fshihet derisa të shtosh të parin.
 - Foto: vendosi te `public/media/` dhe shkruaj `"cover": "/media/emri.jpg"`.
 
-**Kujdes:** `admin/index.html` hap aplikacionin e admin-it në ekran të plotë (desktop, ose pamjen mobile në telefon), duke filluar nga Sign in. Është ende dizajn i klikueshëm: nuk ruan ende asgjë dhe nuk ka më të dhëna shembull (rezervime, artikuj, foto, përdorues, numra analitikë janë bosh). Turet vijnë nga `data/tours.json`. Hapi tjetër është ta lidhim admin-in me `/api/requests` (kërkesat vijnë tashmë aty)
+**Kujdes:** `admin/index.html` hap aplikacionin e admin-it në ekran të plotë (desktop, ose pamjen mobile në telefon), duke filluar nga Sign in. Kërkesat e rezervimit janë të lidhura me databazën (lista, statusi, shënimet). Pjesët e tjera (tour, artikuj, foto, SEO, cilësime) janë ende dizajn i klikueshëm që nuk ruan, dhe nuk ka më të dhëna shembull (rezervime, artikuj, foto, përdorues, numra analitikë janë bosh). Turet vijnë nga `data/tours.json`. Hapi tjetër është ta lidhim admin-in me `/api/requests` (kërkesat vijnë tashmë aty)
 dhe me ruajtjen e tureve/postimeve (p.sh. Cloudflare D1 ose commit-e në GitHub që rindërtojnë faqen).

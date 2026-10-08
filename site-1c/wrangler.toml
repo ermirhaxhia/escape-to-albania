@@ -5,13 +5,6 @@ name = "escape-to-albania"
 pages_build_output_dir = "public"
 compatibility_date = "2026-10-01"
 
-# Booking requests from /contact are stored here (see functions/api/requests.js).
-# Create it with `npx wrangler kv namespace create REQUESTS` and paste the id below,
-# or bind it in the dashboard: Settings → Bindings → KV namespace → REQUESTS.
-# [[kv_namespaces]]
-# binding = "REQUESTS"
-# id = "<your-kv-namespace-id>"
-
 # Database (Cloudflare D1). Used by the Pages Functions as env.DB.
 # Schema and seed: db/migrations/0001_init.sql, db/seed.sql (see db/README.md).
 [[d1_databases]]

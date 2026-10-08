@@ -284,13 +284,22 @@
     sel.insertAdjacentHTML('beforeend', DATA.tours.map(function (t) { return '<option value="' + esc(t.slug) + '">' + esc(t.title) + ' — €' + esc(t.price) + ' pp</option>'; }).join(''));
     var q = new URLSearchParams(location.search).get('tour'); if (q) sel.value = q;
     var date = form.querySelector('input[type=date]'); if (date) date.min = TODAY;
+    // The group limit is set by the guide (Settings → default_max_guests); fall back to 4 if it can't be read.
+    var guests = form.querySelector('select[name=guests]');
+    fetch('/api/config').then(function (r) { return r.ok ? r.json() : { maxGuests: 4 }; }).catch(function () { return { maxGuests: 4 }; }).then(function (c) {
+      var max = c.maxGuests || 4, html = '';
+      for (var i = 1; i <= max; i++) html += '<option' + (i === Math.min(2, max) ? ' selected' : '') + '>' + i + '</option>';
+      guests.innerHTML = html;
+    });
     var err = form.querySelector('.form__error');
+    var limitMsg = document.createElement('p'); limitMsg.className = 'form__error'; limitMsg.setAttribute('role', 'alert'); limitMsg.hidden = true; err.parentNode.insertBefore(limitMsg, err);
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var btn = form.querySelector('[type=submit]'); btn.disabled = true; if (err) err.hidden = true;
+      var btn = form.querySelector('[type=submit]'); btn.disabled = true; if (err) err.hidden = true; limitMsg.hidden = true;
       var body = {}; new FormData(form).forEach(function (v, k) { body[k] = v; });
+      body.lang = document.documentElement.lang || 'en';
       fetch('/api/requests', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-        .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'Request failed'); return j; }); })
+        .then(function (r) { return r.json().then(function (j) { if (!r.ok) { var e = new Error(j.error || 'Request failed'); e.limit = j.limit; throw e; } return j; }); })
         .then(function (j) {
           form.style.display = 'none';
           var ok = document.querySelector('.success'); ok.classList.add('show');
@@ -298,7 +307,7 @@
           var ref = ok.querySelector('[data-ref]'); if (ref && j.ref) ref.textContent = j.ref;
           window.scrollTo({ top: ok.offsetTop - 140, behavior: 'smooth' });
         })
-        .catch(function () { btn.disabled = false; if (err) err.hidden = false; });
+        .catch(function (e) { btn.disabled = false; if (e.limit) { limitMsg.textContent = e.message; limitMsg.hidden = false; } else if (err) err.hidden = false; });
     });
   }
 
