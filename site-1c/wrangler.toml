@@ -11,3 +11,11 @@ compatibility_date = "2026-10-01"
 # [[kv_namespaces]]
 # binding = "REQUESTS"
 # id = "<your-kv-namespace-id>"
+
+# Database (Cloudflare D1). Create it with:  npx wrangler d1 create escape-to-albania
+# then paste the database_id below, or bind it in the dashboard (Settings → Bindings → D1 database → DB).
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "escape-to-albania"
+# database_id = "<your-d1-database-id>"
+# migrations_dir = "db/migrations"
