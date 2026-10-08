@@ -11,3 +11,11 @@ compatibility_date = "2026-10-01"
 # [[kv_namespaces]]
 # binding = "REQUESTS"
 # id = "<your-kv-namespace-id>"
+
+# Database (Cloudflare D1). Used by the Pages Functions as env.DB.
+# Schema and seed: db/migrations/0001_init.sql, db/seed.sql (see db/README.md).
+[[d1_databases]]
+binding = "DB"
+database_name = "escape-to-albania"
+database_id = "e5c6a8e1-b69d-41cd-923e-21640fe8d4c2"
+migrations_dir = "db/migrations"
