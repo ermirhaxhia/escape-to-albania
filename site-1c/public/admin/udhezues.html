@@ -51,6 +51,7 @@
       <li><a href="#tituj">Titull, nën-titull, paragraf</a></li>
       <li><a href="#gjuhet">Anglisht dhe shqip</a></li>
       <li><a href="#foto">Fotot</a></li>
+      <li><a href="#turet">Turet dhe faqet e tyre</a></li>
       <li><a href="#grupi">Maks. mysafirë për grup</a></li>
       <li><a href="#kerkesat">Kërkesat e rezervimit</a></li>
       <li><a href="#fjalor">Fjalorth</a></li>
@@ -130,6 +131,38 @@
     <p>Te <b>Faqja</b> kliko <b>Zgjidh foton</b> (ose <b>Ndrysho foton</b>) dhe zgjidh nga Media. <b>Hiq foton</b> kthen figurën standarde.</p>
   </section>
 
+  <section id="turet">
+    <h2>Turet dhe faqet e tyre</h2>
+    <p><b>Çdo tur që shton krijon vetë një faqe të plotë</b> në <code>/tours/emri-i-turit</code>, me titullin, itinerarin, çfarë përfshihet, fotot, çmimin dhe butonin e rezervimit. Nuk bën asgjë tjetër.</p>
+    <h3>Si e shton një tur</h3>
+    <ol>
+      <li>Te <b>Turet</b> shtyp <b>+ Tur i ri</b>.</li>
+      <li>Plotëso <b>Titulli</b> dhe <b>Çmimi</b> (të vetmet të detyrueshme). Rekomandohet edhe përshkrimi i shkurtër, kohëzgjatja, rajoni, itinerari dhe "Përfshirë".</li>
+      <li>Zgjidh foton te <b>Fotot</b>: <b>Replace</b> për kopertinën dhe <b>+ Add</b> për galerinë. Fotot vijnë nga <b>Media</b>, ngarkoji aty para se të nisësh.</li>
+      <li>Vendose <b>Statusin</b> në <b>Publikuar</b> dhe shtyp <b>Ruaj</b>. Linku <b>Shiko faqen e turit</b> shfaqet menjëherë dhe faqja është live brenda sekondash.</li>
+    </ol>
+    <h3>Çfarë kontrollon secila fushë</h3>
+    <table>
+      <tr><th>Titulli</th><td>H1 i faqes së turit dhe titulli i kartës. Adresa (slug) krijohet vetë nga ai: "Përmet &amp; Benja" bëhet <code>permet-and-benja</code>.</td></tr>
+      <tr><th>Përshkrimi i shkurtër</th><td>Teksti nën titull dhe te karta. Nëse nuk e mbush meta description, Google merr këtë.</td></tr>
+      <tr><th>Rajoni</th><td>Mund të zgjedhësh më shumë se një (p.sh. Kulturë dhe Bregdet). Përcakton filtrat te faqja Tours.</td></tr>
+      <tr><th>Maks. mysafirë</th><td>Lëre bosh që të ndjekë numrin e përgjithshëm. Shkruaje vetëm për një tur me kufi të veçantë.</td></tr>
+      <tr><th>Itinerari</th><td>Hapat e ditës me orë (orën mund ta lësh bosh). Me shigjetat i lëviz lart ose poshtë.</td></tr>
+      <tr><th>SEO title, Meta description, Focus keyword</th><td>Ajo që shfaqet në Google. Nëse i lë bosh, faqja përdor titullin e turit. Mbushi: është ajo që e bën faqen të dalë mirë.</td></tr>
+      <tr><th>URL slug</th><td>Adresa e faqes. Mos e ndrysho pasi turi të jetë publikuar dhe ndarë, sepse linku i vjetër pushon së punuari.</td></tr>
+      <tr><th>Canonical URL</th><td>Zakonisht lëre bosh.</td></tr>
+      <tr><th>Hide from search engines</th><td>Faqja ekziston, por Google nuk e tregon dhe nuk del te sitemap.</td></tr>
+      <tr><th>Shfaqet te Home</th><td>Po = turi del te seksioni "Popular days" në faqen kryesore (deri në 3). Nëse asnjë nuk është i zgjedhur, dalin të parët.</td></tr>
+    </table>
+    <h3>Publikim, fshehje dhe fshirje</h3>
+    <ul>
+      <li><b>Draft</b> (ose çelësi te lista) e fsheh turin. Faqja e tij përgjigjet "404" dhe largohet nga sitemap.</li>
+      <li><b>Fshi</b> e heq përgjithmonë dhe faqja pushon. Kërkesat e rezervimit mbajnë emrin e turit.</li>
+    </ul>
+    <div class="note">Sitemap-i (<code>/sitemap.xml</code>) përditësohet vetë: çdo tur i publikuar hyn aty, ai i fshehur del.</div>
+    <div class="warn">Turet janë ende vetëm në anglisht. Versioni shqip i faqeve të turit do të vijë me ndërruesin e gjuhës.</div>
+  </section>
+
   <section id="grupi">
     <h2>Maks. mysafirë për grup</h2>
     <p>Te <b>Faqja</b>, në grupin "Të përgjithshme". Është <b>një numër i vetëm</b> për të gjithë faqen. Ai shfaqet te:</p>
@@ -173,10 +206,11 @@
 
   <section id="ende">
     <h2>Çfarë nuk punon ende</h2>
-    <p>Këto ekrane ekzistojnë si dizajn, por <b>nuk ruajnë ende</b>:</p>
+    <p>Këto pjesë ekzistojnë si dizajn, por <b>nuk ruajnë ende</b>:</p>
     <ul>
-      <li><b>Turet</b>: ndryshimet e turit nuk shkojnë te faqja (turet vijnë ende nga një skedar).</li>
-      <li><b>Artikujt</b> (Journal), <b>SEO</b>, <b>Analytics</b> dhe <b>Cilësimet</b> (përveç numrit të mysafirëve te Faqja).</li>
+      <li><b>Artikujt</b> (Journal), <b>Analytics</b> dhe <b>Cilësimet</b> (përveç numrit të mysafirëve te Faqja).</li>
+      <li><b>SEO</b> (pasqyra e të gjitha faqeve): SEO e turit ruhet te vetë turi.</li>
+      <li>Turet nuk mund të renditen me radhë të caktuar, dhe nuk kanë ende shqip.</li>
       <li>Etiketat e vogla mbi tituj dhe ikonat e kartave nuk ndryshohen nga paneli.</li>
       <li>Hyrja në panel është e hapur për testim: çdo email dhe fjalëkalim të lë të hysh.</li>
     </ul>

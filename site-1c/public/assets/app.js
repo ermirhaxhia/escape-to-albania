@@ -12,16 +12,31 @@
   function getJSON(name) {
     return fetch('/data/' + name + '.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
   }
+  /* A tour from /api/tours, in the shape the cards use. */
+  function fromApiTour(t) {
+    return {
+      key: t.key, slug: t.slug, title: t.title, short: t.short, hours: t.hours, price: t.price,
+      max: t.ownMax ? t.maxGuests : '', featured: t.featured, scene: t.scene || sceneFor(t.tags), seed: t.seed,
+      region: t.tags.map(function (g) { return g.name; }).join(' · '), tags: t.tags.map(function (g) { return g.key; }).join(' '),
+      cover: t.cover && t.cover.url, coverAlt: t.cover && t.cover.alt, seo: t.seo
+    };
+  }
+  function sceneFor(tags) {
+    var k = (tags || []).map(function (g) { return g.key; });
+    return k.indexOf('north') > -1 ? 'mountain' : k.indexOf('coast') > -1 ? 'coast' : k.indexOf('city') > -1 ? 'city' : k.indexOf('culture') > -1 ? 'castle' : 'coast';
+  }
   function loadData() {
-    return Promise.all([getJSON('tours'), getJSON('articles'), getJSON('reviews'), getJSON('site')]).then(function (d) {
+    var tours = fetch('/api/tours?lang=en').then(function (r) { return r.ok ? r.json() : { tours: [] }; }).catch(function () { return { tours: [] }; })
+      .then(function (j) { return (j.tours || []).map(fromApiTour); });
+    return Promise.all([tours, getJSON('articles'), getJSON('reviews'), getJSON('site')]).then(function (d) {
       DATA.site = (d[3] && !Array.isArray(d[3])) ? d[3] : {};
-      DATA.tours = d[0].filter(function (t) { return t.published !== false; });
+      DATA.tours = d[0];
       DATA.articles = d[1].filter(function (a) { return a.status === 'Published' || (a.status === 'Scheduled' && a.date <= TODAY); })
         .sort(function (a, b) { return a.date < b.date ? 1 : -1; });
       DATA.reviews = d[2];
     });
   }
-  function tourBySlug(slug) { return DATA.tours.filter(function (t) { return t.slug === slug || (t.seo && t.seo.slug === slug); })[0]; }
+  function tourBySlug(slug) { return DATA.tours.filter(function (t) { return t.slug === slug || t.key === slug; })[0]; }
   function fmtDate(d) { try { return new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return d; } }
   /* A picture slot: the uploaded photo when the CMS has one, otherwise the illustrated scene. */
   function pic(cls, item, inner) {
@@ -136,21 +151,25 @@
 
   /* ---------------- Tours ---------------- */
   function tourCard(t) {
-    return '<article class="tour reveal" data-tags="' + esc(t.tags || String(t.region).toLowerCase()) + '">' +
-      pic('tour__img', t, '<span class="tour__tag">' + esc(t.region) + '</span>') +
-      '<div class="tour__body"><div class="tour__meta"><span>' + esc(t.hours) + ' hours</span><span>Up to ' + (t.max ? esc(t.max) : '<span data-max>4</span>') + ' guests</span></div>' +
+    return '<article class="tour post reveal" data-tags="' + esc(t.tags || String(t.region).toLowerCase()) + '">' +
+      '<a class="post__link" href="/tours/' + encodeURIComponent(t.slug) + '" aria-label="' + esc(t.title) + '"></a>' +
+      pic('tour__img', t, t.region ? '<span class="tour__tag">' + esc(t.region) + '</span>' : '') +
+      '<div class="tour__body"><div class="tour__meta">' + (t.hours ? '<span>' + esc(t.hours) + ' hours</span>' : '') + '<span>Up to ' + (t.max ? esc(t.max) : '<span data-max>4</span>') + ' guests</span></div>' +
       '<h3>' + esc(t.title) + '</h3><p>' + esc(t.short) + '</p>' +
       '<div class="tour__foot"><span class="price">From <b>€' + esc(t.price) + '</b> pp</span>' +
-      '<button class="link" type="button" data-open="' + esc(t.slug) + '">Details</button>' +
-      '<a class="btn btn--primary btn--small" href="/contact?tour=' + encodeURIComponent(t.slug) + '">Book</a></div></div></article>';
+      '<span class="link">See the day →</span></div></div></article>';
   }
   function renderTours() {
     document.querySelectorAll('[data-tours]').forEach(function (el) {
-      var list = el.dataset.tours === 'featured' ? DATA.tours.filter(function (t) { return t.featured; }).slice(0, 3) : DATA.tours;
-      el.innerHTML = list.map(tourCard).join('');
+      var list = DATA.tours;
+      if (el.dataset.tours === 'featured') {
+        var feat = DATA.tours.filter(function (t) { return t.featured; });
+        list = (feat.length ? feat : DATA.tours).slice(0, 3);
+      }
+      el.innerHTML = list.length ? list.map(tourCard).join('') : '<p class="lead">New days are coming soon.</p>';
+      if (!list.length && el.dataset.tours === 'featured') { var sec = el.closest('section'); if (sec) sec.hidden = true; }
     });
     document.addEventListener('click', function (e) {
-      var b = e.target.closest('[data-open]'); if (b) openTour(b.dataset.open);
       var chip = e.target.closest('.chip');
       if (chip) {
         var group = chip.parentNode;
@@ -159,25 +178,6 @@
         grid.querySelectorAll('[data-tags]').forEach(function (c) { c.hidden = !(f === 'all' || c.dataset.tags.split(/[ ,]+/).indexOf(f) > -1); });
       }
     });
-    // Deep link: /tours/<slug> opens that tour (see _redirects)
-    var m = location.pathname.match(/^\/tours\/([^/]+)/);
-    if (m && document.body.classList.contains('page-tours')) {
-      var t = tourBySlug(decodeURIComponent(m[1]));
-      if (t) { openTour(t.slug); if (t.seo && t.seo.title) document.title = t.seo.title; }
-    }
-  }
-  function openTour(slug) {
-    var t = tourBySlug(slug); if (!t) return;
-    var d = document.getElementById('tour-dialog');
-    if (!d) { d = document.createElement('dialog'); d.id = 'tour-dialog'; d.className = 'tour-dialog'; document.body.appendChild(d); d.addEventListener('click', function (e) { if (e.target === d) d.close(); }); }
-    d.innerHTML = '<button class="dlg__close" type="button" aria-label="Close" onclick="this.closest(\'dialog\').close()">×</button>' +
-      pic('dlg__img', t) +
-      '<div class="dlg__body"><div class="eyebrow" style="margin:0">' + esc(t.region) + ' · ' + esc(t.hours) + ' hours</div><h3>' + esc(t.title) + '</h3><p>' + esc(t.short) + '</p>' +
-      '<div class="dlg__cols"><div><h4>A typical day</h4><ol>' + (t.steps || []).map(function (p) { return '<li>' + (p.t ? '<b>' + esc(p.t) + '</b> ' : '') + esc(p.s) + '</li>'; }).join('') + '</ol></div>' +
-      '<div><h4>Included</h4><ul>' + (t.incl || []).map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div></div>' +
-      '<div class="tour__foot"><span class="price">From <b>€' + esc(t.price) + '</b> per person</span><a class="btn btn--primary" href="/contact?tour=' + encodeURIComponent(t.slug) + '">Book this day</a></div></div>';
-    renderScenes(d);
-    d.showModal();
   }
 
   /* ---------------- Reviews ---------------- */
@@ -319,7 +319,7 @@
   function initForm() {
     var form = document.querySelector('form[data-booking]'); if (!form) return;
     var sel = form.querySelector('select[name=tour]');
-    sel.insertAdjacentHTML('beforeend', DATA.tours.map(function (t) { return '<option value="' + esc(t.slug) + '">' + esc(t.title) + ' — €' + esc(t.price) + ' pp</option>'; }).join(''));
+    sel.insertAdjacentHTML('beforeend', DATA.tours.map(function (t) { return '<option value="' + esc(t.key) + '">' + esc(t.title) + ' — €' + esc(t.price) + ' pp</option>'; }).join(''));
     var q = new URLSearchParams(location.search).get('tour'); if (q) sel.value = q;
     var date = form.querySelector('input[type=date]'); if (date) date.min = TODAY;
     // The group limit is set by the guide (Settings → default_max_guests); fall back to 4 if it can't be read.
