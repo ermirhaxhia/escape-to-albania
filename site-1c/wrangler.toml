@@ -1,0 +1,13 @@
+# Cloudflare Pages project for Escape to Albania (design 1c).
+# Used by `npx wrangler pages dev` / `npx wrangler pages deploy`; in the Cloudflare dashboard
+# set Root directory = site-1c and Build output directory = public instead.
+name = "escape-to-albania"
+pages_build_output_dir = "public"
+compatibility_date = "2026-10-01"
+
+# Booking requests from /contact are stored here (see functions/api/requests.js).
+# Create it with `npx wrangler kv namespace create REQUESTS` and paste the id below,
+# or bind it in the dashboard: Settings → Bindings → KV namespace → REQUESTS.
+# [[kv_namespaces]]
+# binding = "REQUESTS"
+# id = "<your-kv-namespace-id>"

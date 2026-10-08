@@ -1,0 +1,6 @@
+# Pretty URLs for content managed in the admin
+/blog/:slug   /article   200
+/tours/:slug  /tours     200
+
+# Old demo links
+/index.html   /          301
