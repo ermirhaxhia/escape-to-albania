@@ -79,3 +79,9 @@ Provë lokale: `npx wrangler pages dev public --kv REQUESTS --binding ADMIN_TOKE
 
 **Kujdes:** `admin/index.html` hap aplikacionin e admin-it në ekran të plotë (desktop, ose pamjen mobile në telefon), duke filluar nga Sign in. Kërkesat e rezervimit janë të lidhura me databazën (lista, statusi, shënimet). Pjesët e tjera (tour, artikuj, foto, SEO, cilësime) janë ende dizajn i klikueshëm që nuk ruan, dhe nuk ka më të dhëna shembull (rezervime, artikuj, foto, përdorues, numra analitikë janë bosh). Turet vijnë nga `data/tours.json`. Hapi tjetër është ta lidhim admin-in me `/api/requests` (kërkesat vijnë tashmë aty)
 dhe me ruajtjen e tureve/postimeve (p.sh. Cloudflare D1 ose commit-e në GitHub që rindërtojnë faqen).
+
+## Çfarë ndryshohet nga CMS te faqja "Faqja"
+
+Lista është te `functions/_lib/slots.js`. Çdo fushë është një **foto**, një **tekst**, një **çelës** (aktiv/i fshehur) ose një **numër** nga cilësimet.
+Titujt janë gjithmonë H1 dhe rreshtat nën ta paragrafë: guida ndryshon fjalët, jo strukturën. Në tekste, `*fjala*` del me kontur dhe `{max}` bëhet numri i mysafirëve.
+**Maks. mysafirë për grup** është një cilësim i vetëm (`settings.default_max_guests`): e lexojnë rrethi mbi foto, tekstet, lista te formulari dhe kontrolli i rezervimeve. Meta description nuk e përmbajnë numrin.

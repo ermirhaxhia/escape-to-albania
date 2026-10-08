@@ -138,7 +138,7 @@
   function tourCard(t) {
     return '<article class="tour reveal" data-tags="' + esc(t.tags || String(t.region).toLowerCase()) + '">' +
       pic('tour__img', t, '<span class="tour__tag">' + esc(t.region) + '</span>') +
-      '<div class="tour__body"><div class="tour__meta"><span>' + esc(t.hours) + ' hours</span><span>Up to ' + esc(t.max || 4) + ' guests</span></div>' +
+      '<div class="tour__body"><div class="tour__meta"><span>' + esc(t.hours) + ' hours</span><span>Up to ' + (t.max ? esc(t.max) : '<span data-max>4</span>') + ' guests</span></div>' +
       '<h3>' + esc(t.title) + '</h3><p>' + esc(t.short) + '</p>' +
       '<div class="tour__foot"><span class="price">From <b>€' + esc(t.price) + '</b> pp</span>' +
       '<button class="link" type="button" data-open="' + esc(t.slug) + '">Details</button>' +
@@ -215,8 +215,21 @@
     document.querySelectorAll('[data-tour-count] b').forEach(function (b) { b.textContent = DATA.tours.length; });
   }
 
+  /* ---------------- Group limit (one setting, shown everywhere) ---------------- */
+  var CONFIG = { maxGuests: 4 }, configP = null;
+  var WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+  function getConfig() {
+    return configP || (configP = fetch('/api/config').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+      .then(function (c) { if (c && c.maxGuests) CONFIG = c; return CONFIG; }));
+  }
+  function applyMax() {
+    var n = CONFIG.maxGuests || 4, word = n >= 1 && n <= 10 ? WORDS[n] : String(n);
+    document.querySelectorAll('[data-max]').forEach(function (e) { e.textContent = n; });
+    document.querySelectorAll('[data-max-word]').forEach(function (e) { e.textContent = word; });
+  }
+
   /* ---------------- Editable content (photos and texts set from the admin, /api/content) ---------------- */
-  function slotHtml(v) { return esc(v).replace(/\*(.+?)\*/g, '<span class="outline">$1</span>'); }
+  function slotHtml(v) { return esc(v).replace(/\*(.+?)\*/g, '<span class="outline">$1</span>').replace(/\{max\}/g, CONFIG.maxGuests || 4); }
   function setPhoto(el, im) {
     var old = el.querySelector(':scope > svg'); if (old) old.remove();
     var prev = el.querySelector(':scope > img.slot-photo'); if (prev) prev.remove();
@@ -228,8 +241,11 @@
   }
   function applyContent() {
     var lang = document.documentElement.lang || 'en';
-    return fetch('/api/content?lang=' + encodeURIComponent(lang)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (c) {
+    var content = fetch('/api/content?lang=' + encodeURIComponent(lang)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    return Promise.all([content, getConfig()]).then(function (all) {
+      var c = all[0];
       if (!c) return;
+      var badge = document.querySelector('[data-badge]'); if (badge && (c.texts || {})['home.badge'] === 'off') badge.hidden = true;
       document.querySelectorAll('[data-slot]').forEach(function (el) { var v = (c.texts || {})[el.dataset.slot]; if (v) el.innerHTML = slotHtml(v); });
       document.querySelectorAll('[data-slot-img]').forEach(function (el) { var im = (c.images || {})[el.dataset.slotImg]; if (im) setPhoto(el, im); });
     });
@@ -291,7 +307,7 @@
       '<div class="post__body prose reveal">' + a.body + '</div>' +
       '<aside class="post__aside reveal">' +
         (t ? '<div class="post__tour"><div class="eyebrow">The tour</div><h3>' + esc(t.title) + '</h3><p>' + esc(t.short) + '</p><p class="price">From <b>€' + esc(t.price) + '</b> pp</p><a class="btn btn--primary" href="/contact?tour=' + encodeURIComponent(t.slug) + '">Book this day</a> <a class="link" href="/tours/' + encodeURIComponent(t.slug) + '">Details</a></div>' :
-             '<div class="post__tour"><div class="eyebrow">Plan your day</div><h3>Travel with a local.</h3><p>Private days for up to four guests, at your pace.</p><a class="btn btn--primary" href="/contact">Book a day</a></div>') +
+             '<div class="post__tour"><div class="eyebrow">Plan your day</div><h3>Travel with a local.</h3><p>Private days for up to <span data-max-word>four</span> guests, at your pace.</p><a class="btn btn--primary" href="/contact">Book a day</a></div>') +
         (a.tags ? '<p class="post__tags">' + String(a.tags).split(',').map(function (x) { return '<span>#' + esc(x.trim()) + '</span>'; }).join(' ') + '</p>' : '') +
       '</aside></div></section>' +
       (more.length ? '<section class="section section--alt"><div class="container"><div class="section__head reveal"><div><div class="eyebrow">Keep reading</div><h2>More from the journal.</h2></div><a class="btn btn--ghost" href="/blog">All stories →</a></div><div class="tour-grid">' + more.map(postCard).join('') + '</div></div></section>' : '');
@@ -306,7 +322,7 @@
     var date = form.querySelector('input[type=date]'); if (date) date.min = TODAY;
     // The group limit is set by the guide (Settings → default_max_guests); fall back to 4 if it can't be read.
     var guests = form.querySelector('select[name=guests]');
-    fetch('/api/config').then(function (r) { return r.ok ? r.json() : { maxGuests: 4 }; }).catch(function () { return { maxGuests: 4 }; }).then(function (c) {
+    getConfig().then(function (c) {
       var max = c.maxGuests || 4, html = '';
       for (var i = 1; i <= max; i++) html += '<option' + (i === Math.min(2, max) ? ' selected' : '') + '>' + i + '</option>';
       guests.innerHTML = html;
@@ -361,7 +377,8 @@
     mobileCta(); renderLogos(); initNav();
     document.querySelectorAll('[data-year]').forEach(function (e) { e.textContent = new Date().getFullYear(); });
     loadData().then(function () {
-      renderTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderArticle(); renderScenes(); applyContent(); initForm(); initReveal();
+      renderTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderArticle(); renderScenes(); initForm(); initReveal();
+      applyContent().then(applyMax);
     });
   });
 })();
