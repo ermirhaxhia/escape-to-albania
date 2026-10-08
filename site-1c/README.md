@@ -88,3 +88,5 @@ Në CMS fushat janë të grupuara në seksione të palosshme (vetëm i pari ësh
 **Maks. mysafirë për grup** është një cilësim i vetëm (`settings.default_max_guests`): e lexojnë rrethi mbi foto, tekstet, lista te formulari dhe kontrolli i rezervimeve. Meta description nuk e përmbajnë numrin.
 
 Ikonat (zarf, bisedë, vendndodhje, Instagram, zemër, diell, euro, shenjë) janë SVG inline nga Lucide (licenca ISC) dhe marrin ngjyrën e tekstit. Nuk kërkohen skedarë të jashtëm.
+
+Shpjegimet për përdoruesin janë te `public/admin/udhezues.html` (hapet nga menuja e panelit, "Udhëzues"): atje shkojnë, jo te format. Kur shtohet një fushë ose ekran i ri te paneli, përditësoje atë faqe.
