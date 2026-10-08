@@ -1,23 +1,15 @@
-// Cloudflare Pages Function: /api/requests
-// POST  – the booking form on /contact sends a request here; it is stored in the
-//         REQUESTS KV namespace in the same shape the admin's "Requests" screen uses.
-// GET   – lists stored requests for the admin. Needs `Authorization: Bearer <ADMIN_TOKEN>`
-//         (set ADMIN_TOKEN as an encrypted environment variable in Cloudflare Pages).
+// Cloudflare Pages Function: POST /api/requests
+// The booking form on /contact sends a request here. It is stored in D1 (table `requests`), with a
+// first entry in `request_events`. The admin reads and updates requests through /api/admin/requests.
 
-const json = (data, status = 200) =>
-  new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
-
-const clean = (v, max = 500) => String(v == null ? '' : v).trim().slice(0, max);
+import { json, clean } from '../_lib/http.js';
 
 export async function onRequestPost({ request, env }) {
-  if (!env.REQUESTS) return json({ error: 'Booking storage is not configured' }, 503);
+  if (!env.DB) return json({ error: 'Booking storage is not configured' }, 503);
 
   let body;
-  try {
-    body = await request.json();
-  } catch {
-    return json({ error: 'Invalid request' }, 400);
-  }
+  try { body = await request.json(); } catch { return json({ error: 'Invalid request' }, 400); }
+
   // Honeypot field: real visitors never fill it in.
   if (clean(body.website)) return json({ ok: true, ref: 'EA-0000' });
 
@@ -25,38 +17,35 @@ export async function onRequestPost({ request, env }) {
   const email = clean(body.email, 200);
   if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: 'Name and a valid email are required' }, 400);
 
-  const counter = parseInt((await env.REQUESTS.get('meta:counter')) || '1048', 10) + 1;
-  await env.REQUESTS.put('meta:counter', String(counter));
-  const ref = 'EA-' + counter;
-  const now = new Date().toISOString();
+  const lang = ['en', 'sq'].includes(clean(body.lang, 5)) ? clean(body.lang, 5) : 'en';
+  const tourKey = clean(body.tour, 80);
+  const guests = Math.max(parseInt(body.guests, 10) || 1, 1);
 
-  const booking = {
-    id: 'b' + counter,
-    ref,
-    name,
-    from: request.cf && request.cf.country ? request.cf.country : '',
-    email,
-    wa: clean(body.wa, 40),
-    tour: clean(body.tour, 80) || 'custom',
-    date: clean(body.date, 10),
-    time: '',
-    guests: Math.min(Math.max(parseInt(body.guests, 10) || 1, 1), 50),
-    pickup: clean(body.pickup, 200),
-    status: 'New',
-    createdAt: now,
-    msg: clean(body.msg, 2000),
-    notes: ''
-  };
-  await env.REQUESTS.put('req:' + now + ':' + ref, JSON.stringify(booking));
-  return json({ ok: true, ref });
-}
+  // The group limit is decided by the guide: the tour's own limit, or settings.default_max_guests.
+  const tour = tourKey && tourKey !== 'custom'
+    ? await env.DB.prepare(
+        `SELECT t.id, t.max_guests, COALESCE(i.title, t.key) AS title
+           FROM tours t LEFT JOIN tour_i18n i ON i.tour_id = t.id AND i.lang = 'en' WHERE t.key = ?1`).bind(tourKey).first()
+    : null;
+  const def = await env.DB.prepare(`SELECT value FROM settings WHERE key = 'default_max_guests'`).first();
+  const limit = (tour && tour.max_guests) || parseInt(def && def.value, 10) || 4;
+  if (guests > limit) {
+    return json({ error: 'Groups for this day are limited to ' + limit + ' guests. Please write to us for a bigger group.', limit }, 400);
+  }
 
-export async function onRequestGet({ request, env }) {
-  const auth = request.headers.get('Authorization') || '';
-  if (!env.ADMIN_TOKEN || auth !== 'Bearer ' + env.ADMIN_TOKEN) return json({ error: 'Unauthorized' }, 401);
-  if (!env.REQUESTS) return json({ error: 'Booking storage is not configured' }, 503);
+  const tmp = 'tmp-' + crypto.randomUUID();
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(clean(body.date, 10)) ? clean(body.date, 10) : null;
+  const country = request.cf && request.cf.country ? request.cf.country : null;
 
-  const list = await env.REQUESTS.list({ prefix: 'req:' });
-  const items = await Promise.all(list.keys.map((k) => env.REQUESTS.get(k.name, 'json')));
-  return json(items.filter(Boolean).reverse());
+  // One batch = one transaction: the request, its first history entry, and its public reference (EA-1001, …).
+  const done = await env.DB.batch([
+    env.DB.prepare(
+      `INSERT INTO requests (ref, name, email, whatsapp, country_code, lang, tour_id, tour_title, preferred_date, guests, pickup, message)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)`
+    ).bind(tmp, name, email, clean(body.wa, 40), country, lang, tour ? tour.id : null,
+           tour ? tour.title : 'Custom day / not sure yet', date, guests, clean(body.pickup, 200), clean(body.msg, 2000)),
+    env.DB.prepare(`INSERT INTO request_events (request_id, type, to_status) SELECT id, 'created', 'new' FROM requests WHERE ref = ?1`).bind(tmp),
+    env.DB.prepare(`UPDATE requests SET ref = 'EA-' || (1000 + id) WHERE ref = ?1`).bind(tmp)
+  ]);
+  return json({ ok: true, ref: 'EA-' + (1000 + done[0].meta.last_row_id) });
 }

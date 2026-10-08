@@ -1,7 +1,7 @@
 """Builds db/console/*.sql: the migration and the seed with no comments, cut into small pieces.
 
 The Cloudflare dashboard console flattens everything onto one line, so '--' comments would swallow the
-rest of the script. Paste the files in order, one at a time.   python tools/make_console_sql.py
+rest of the script. Paste the files of one migration in order, one at a time. Files of a migration you already ran are not needed again.   python tools/make_console_sql.py
 """
 import glob, os, re, sqlite3
 
@@ -43,16 +43,19 @@ files = sorted(glob.glob(os.path.join(ROOT, 'db/migrations/*.sql'))) + [os.path.
 os.makedirs(OUT, exist_ok=True)
 for old in glob.glob(os.path.join(OUT, '*.sql')):
     os.remove(old)
-n = 0
+total = 0
 for f in files:
+    base = os.path.splitext(os.path.basename(f))[0]          # 0001_init, 0002_site_content, seed
     stmts = statements(strip_comments(open(f, encoding='utf-8').read()))
-    chunk = ''
-    for s in stmts + [None]:
-        if s is None or (chunk and len(chunk) + len(s) > LIMIT):
-            if chunk:
-                n += 1
-                open(os.path.join(OUT, '%02d_%s.sql' % (n, os.path.splitext(os.path.basename(f))[0])), 'w', encoding='utf-8', newline='\n').write(chunk.strip() + '\n')
-            chunk = ''
-        if s:
-            chunk += s + ' '
-print(n, 'files in db/console')
+    chunks, chunk = [], ''
+    for s in stmts:
+        if chunk and len(chunk) + len(s) > LIMIT:
+            chunks.append(chunk); chunk = ''
+        chunk += s + ' '
+    if chunk:
+        chunks.append(chunk)
+    for k, c in enumerate(chunks, 1):
+        total += 1
+        with open(os.path.join(OUT, '%s_%02d.sql' % (base, k)), 'w', encoding='utf-8', newline='\n') as out:
+            out.write(c.strip() + '\n')
+print(total, 'files in db/console')

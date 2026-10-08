@@ -5,13 +5,6 @@ name = "escape-to-albania"
 pages_build_output_dir = "public"
 compatibility_date = "2026-10-01"
 
-# Booking requests from /contact are stored here (see functions/api/requests.js).
-# Create it with `npx wrangler kv namespace create REQUESTS` and paste the id below,
-# or bind it in the dashboard: Settings → Bindings → KV namespace → REQUESTS.
-# [[kv_namespaces]]
-# binding = "REQUESTS"
-# id = "<your-kv-namespace-id>"
-
 # Database (Cloudflare D1). Used by the Pages Functions as env.DB.
 # Schema and seed: db/migrations/0001_init.sql, db/seed.sql (see db/README.md).
 [[d1_databases]]
@@ -19,3 +12,9 @@ binding = "DB"
 database_name = "escape-to-albania"
 database_id = "e5c6a8e1-b69d-41cd-923e-21640fe8d4c2"
 migrations_dir = "db/migrations"
+
+# Photo storage (Cloudflare R2). Create the bucket first (Storage & databases -> R2 -> Create bucket "escape-to-albania-media"),
+# then remove the "#" below and push. A binding to a bucket that does not exist makes the deploy fail.
+# [[r2_buckets]]
+# binding = "MEDIA"
+# bucket_name = "escape-to-albania-media"

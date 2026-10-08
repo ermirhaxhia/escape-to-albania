@@ -215,6 +215,26 @@
     document.querySelectorAll('[data-tour-count] b').forEach(function (b) { b.textContent = DATA.tours.length; });
   }
 
+  /* ---------------- Editable content (photos and texts set from the admin, /api/content) ---------------- */
+  function slotHtml(v) { return esc(v).replace(/\*(.+?)\*/g, '<span class="outline">$1</span>'); }
+  function setPhoto(el, im) {
+    var old = el.querySelector(':scope > svg'); if (old) old.remove();
+    var prev = el.querySelector(':scope > img.slot-photo'); if (prev) prev.remove();
+    el.classList.add('has-photo');
+    var img = document.createElement('img');
+    img.className = 'slot-photo'; img.src = im.url; img.alt = im.alt || ''; img.decoding = 'async';
+    if (im.width) img.width = im.width; if (im.height) img.height = im.height;
+    el.insertBefore(img, el.firstChild);
+  }
+  function applyContent() {
+    var lang = document.documentElement.lang || 'en';
+    return fetch('/api/content?lang=' + encodeURIComponent(lang)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (c) {
+      if (!c) return;
+      document.querySelectorAll('[data-slot]').forEach(function (el) { var v = (c.texts || {})[el.dataset.slot]; if (v) el.innerHTML = slotHtml(v); });
+      document.querySelectorAll('[data-slot-img]').forEach(function (el) { var im = (c.images || {})[el.dataset.slotImg]; if (im) setPhoto(el, im); });
+    });
+  }
+
   /* ---------------- Journal (blog) ---------------- */
   function postCard(a) {
     return '<article class="tour post reveal" data-tags="' + esc(String(a.cat).toLowerCase().replace(/\s+/g, '-')) + '">' +
@@ -284,13 +304,22 @@
     sel.insertAdjacentHTML('beforeend', DATA.tours.map(function (t) { return '<option value="' + esc(t.slug) + '">' + esc(t.title) + ' — €' + esc(t.price) + ' pp</option>'; }).join(''));
     var q = new URLSearchParams(location.search).get('tour'); if (q) sel.value = q;
     var date = form.querySelector('input[type=date]'); if (date) date.min = TODAY;
+    // The group limit is set by the guide (Settings → default_max_guests); fall back to 4 if it can't be read.
+    var guests = form.querySelector('select[name=guests]');
+    fetch('/api/config').then(function (r) { return r.ok ? r.json() : { maxGuests: 4 }; }).catch(function () { return { maxGuests: 4 }; }).then(function (c) {
+      var max = c.maxGuests || 4, html = '';
+      for (var i = 1; i <= max; i++) html += '<option' + (i === Math.min(2, max) ? ' selected' : '') + '>' + i + '</option>';
+      guests.innerHTML = html;
+    });
     var err = form.querySelector('.form__error');
+    var limitMsg = document.createElement('p'); limitMsg.className = 'form__error'; limitMsg.setAttribute('role', 'alert'); limitMsg.hidden = true; err.parentNode.insertBefore(limitMsg, err);
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var btn = form.querySelector('[type=submit]'); btn.disabled = true; if (err) err.hidden = true;
+      var btn = form.querySelector('[type=submit]'); btn.disabled = true; if (err) err.hidden = true; limitMsg.hidden = true;
       var body = {}; new FormData(form).forEach(function (v, k) { body[k] = v; });
+      body.lang = document.documentElement.lang || 'en';
       fetch('/api/requests', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-        .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'Request failed'); return j; }); })
+        .then(function (r) { return r.json().then(function (j) { if (!r.ok) { var e = new Error(j.error || 'Request failed'); e.limit = j.limit; throw e; } return j; }); })
         .then(function (j) {
           form.style.display = 'none';
           var ok = document.querySelector('.success'); ok.classList.add('show');
@@ -298,7 +327,7 @@
           var ref = ok.querySelector('[data-ref]'); if (ref && j.ref) ref.textContent = j.ref;
           window.scrollTo({ top: ok.offsetTop - 140, behavior: 'smooth' });
         })
-        .catch(function () { btn.disabled = false; if (err) err.hidden = false; });
+        .catch(function (e) { btn.disabled = false; if (e.limit) { limitMsg.textContent = e.message; limitMsg.hidden = false; } else if (err) err.hidden = false; });
     });
   }
 
@@ -332,7 +361,7 @@
     mobileCta(); renderLogos(); initNav();
     document.querySelectorAll('[data-year]').forEach(function (e) { e.textContent = new Date().getFullYear(); });
     loadData().then(function () {
-      renderTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderArticle(); renderScenes(); initForm(); initReveal();
+      renderTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderArticle(); renderScenes(); applyContent(); initForm(); initReveal();
     });
   });
 })();
