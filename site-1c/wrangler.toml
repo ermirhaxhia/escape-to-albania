@@ -12,3 +12,9 @@ binding = "DB"
 database_name = "escape-to-albania"
 database_id = "e5c6a8e1-b69d-41cd-923e-21640fe8d4c2"
 migrations_dir = "db/migrations"
+
+# Photo storage (Cloudflare R2). Create the bucket first (Storage & databases -> R2 -> Create bucket "escape-to-albania-media"),
+# then remove the "#" below and push. A binding to a bucket that does not exist makes the deploy fail.
+# [[r2_buckets]]
+# binding = "MEDIA"
+# bucket_name = "escape-to-albania-media"

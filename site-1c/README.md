@@ -27,6 +27,8 @@ site-1c/
 ├── functions/api/tours.js      Turet nga D1 (GET ?lang=en)
 ├── functions/api/config.js     Cilësime publike (limiti i grupit) nga D1
 ├── functions/_lib/http.js      Ndihmëse: JSON, pastrim teksti, mbrojtja me ADMIN_TOKEN
+├── functions/api/admin/media   Fotot: GET lista, POST ngarkim (WebP), media/[id] PATCH alt/përshkrim, DELETE
+├── functions/media/[[path]].js Shërben fotot nga R2 në /media/photos/…
 ├── db/                         Skema D1, seed, README
 ├── functions/api/analytics.js  Burimet e vizitorëve nga Cloudflare Web Analytics (për admin-in)
 ├── tools/admin_bundle.py       Hap/mbyll kodin e admin-it brenda admin/index.html për ta ndryshuar
@@ -41,6 +43,7 @@ site-1c/
    - **Build command:** (bosh)
    - **Root directory:** `site-1c`
    - **Build output directory:** `public`
+3. **Fotot (R2):** krijo bucket-in `escape-to-albania-media` (Storage & databases → R2), pastaj hiq `#` nga blloku `[[r2_buckets]]` te `wrangler.toml` dhe bëj push. Çdo foto kthehet në WebP (max 2000 px) në browser para ngarkimit.
 3. **Databaza:** shih `db/README.md` (krijo D1, migrimi, seed). Lidhja `DB` është te `wrangler.toml`.
 4. **Admin (test):** për beta, admin-i është i hapur: çdo email dhe fjalëkalim të lejon të hysh. Kur të jetë projekti i vërtetë, shto sekretin `ADMIN_TOKEN` (ose vendos `/admin` pas Cloudflare Access) dhe mbrojtja aktivizohet vetë.
 5. **Mbro /admin:** Zero Trust → Access → Applications → Self-hosted, domain `escapetoalbania.com/admin*`
