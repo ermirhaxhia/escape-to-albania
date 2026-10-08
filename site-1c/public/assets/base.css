@@ -191,13 +191,7 @@ dialog.tour-dialog::backdrop { background: rgba(10, 20, 30, .6); backdrop-filter
 .dlg__body h4 { font-family: var(--font-body); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; font-weight: 800; }
 .dlg__body ol, .dlg__body ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 15.5px; }
 
-/* ---------- Demo switcher + reveal ---------- */
-.demo-bar { position: fixed; z-index: 100; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 999px; background: rgba(20,20,20,.92); color: #fff; font: 600 13px 'Figtree', system-ui, sans-serif; box-shadow: 0 8px 30px rgba(0,0,0,.3); max-width: calc(100vw - 20px); backdrop-filter: blur(8px); }
-.demo-bar a { color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 999px; opacity: .75; white-space: nowrap; }
-.demo-bar a:hover { opacity: 1; background: rgba(255,255,255,.14); }
-.demo-bar a.on { background: #fff; color: #111; opacity: 1; }
-.demo-bar .sep { width: 1px; height: 18px; background: rgba(255,255,255,.25); margin: 0 4px; }
-@media (max-width: 560px) { .demo-bar .lbl { display: none; } .demo-bar a { padding: 8px 9px; } }
+/* ---------- Reveal ---------- */
 .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
 .js .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .js .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
@@ -206,7 +200,6 @@ dialog.tour-dialog::backdrop { background: rgba(10, 20, 30, .6); backdrop-filter
 html, body { overflow-x: clip; }
 .hero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
 .mobile-cta { display: none; }
-.demo-bar { z-index: 120; }
 
 @media (max-width: 860px) {
   .nav { max-height: calc(100dvh - 64px); overflow-y: auto; gap: 2px; padding: 8px 16px 22px; }
@@ -281,9 +274,6 @@ html, body { overflow-x: clip; }
   .mobile-cta .btn--ghost { flex: 0 0 42%; }
   body.page-contact .mobile-cta { display: none; }
 
-  /* demo switcher becomes a thin top strip so it doesn't cover the booking bar */
-  .demo-bar { position: static; transform: none; border-radius: 0; width: 100%; max-width: none; justify-content: center; padding: 4px; box-shadow: none; font-size: 12px; }
-  .demo-bar a { padding: 8px 10px; }
 }
 @media (max-width: 380px) { .mobile-cta .btn--ghost { flex-basis: 38%; } .facts { grid-template-columns: 1fr; } }
 

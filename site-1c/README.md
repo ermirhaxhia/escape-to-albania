@@ -62,8 +62,9 @@ Provë lokale: `npx wrangler pages dev public --kv REQUESTS --binding ADMIN_TOKE
 - Postim i ri për një tur me grup: shto një objekt te `articles.json` me `cat: "Group tours"`,
   `status: "Published"` dhe, nëse do, `tour: "<slug i turit>"` që të dalë kutia "Book this day".
   `Scheduled` del vetë kur vjen data.
+- **Kontaktet** (email, WhatsApp, Instagram) shkruhen te `public/data/site.json`. Sa kohë një fushë është bosh, ajo fshihet nga faqja (footer, Contact, butoni WhatsApp në telefon). Shembull: `{"email": "info@domain.com", "whatsapp": "+355691234567", "instagram": "escapetoalbania"}`.
+- `reviews.json` dhe `articles.json` janë bosh. Seksioni i vlerësimeve fshihet derisa të shtosh të parin.
 - Foto: vendosi te `public/media/` dhe shkruaj `"cover": "/media/emri.jpg"`.
 
-**Kujdes:** `admin/index.html` hap aplikacionin e admin-it në ekran të plotë (desktop, ose pamjen mobile në telefon), duke filluar nga Sign in. Është ende dizajn i klikueshëm: Të dhënat aty janë shembuj
-dhe nuk ruhen ende. Hapi tjetër është ta lidhim admin-in me `/api/requests` (kërkesat vijnë tashmë aty)
+**Kujdes:** `admin/index.html` hap aplikacionin e admin-it në ekran të plotë (desktop, ose pamjen mobile në telefon), duke filluar nga Sign in. Është ende dizajn i klikueshëm: nuk ruan ende asgjë dhe nuk ka më të dhëna shembull (rezervime, artikuj, foto, përdorues, numra analitikë janë bosh). Turet vijnë nga `data/tours.json`. Hapi tjetër është ta lidhim admin-in me `/api/requests` (kërkesat vijnë tashmë aty)
 dhe me ruajtjen e tureve/postimeve (p.sh. Cloudflare D1 ose commit-e në GitHub që rindërtojnë faqen).

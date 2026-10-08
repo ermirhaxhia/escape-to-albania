@@ -5,7 +5,7 @@
   'use strict';
   document.documentElement.classList.add('js');
   var M = window.MODEL;
-  var DATA = { tours: [], articles: [], reviews: [] };
+  var DATA = { tours: [], articles: [], reviews: [], site: {} };
   var TODAY = new Date().toISOString().slice(0, 10);
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -13,7 +13,8 @@
     return fetch('/data/' + name + '.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
   }
   function loadData() {
-    return Promise.all([getJSON('tours'), getJSON('articles'), getJSON('reviews')]).then(function (d) {
+    return Promise.all([getJSON('tours'), getJSON('articles'), getJSON('reviews'), getJSON('site')]).then(function (d) {
+      DATA.site = (d[3] && !Array.isArray(d[3])) ? d[3] : {};
       DATA.tours = d[0].filter(function (t) { return t.published !== false; });
       DATA.articles = d[1].filter(function (a) { return a.status === 'Published' || (a.status === 'Scheduled' && a.date <= TODAY); })
         .sort(function (a, b) { return a.date < b.date ? 1 : -1; });
@@ -182,11 +183,36 @@
   /* ---------------- Reviews ---------------- */
   function renderReviews() {
     document.querySelectorAll('[data-reviews]').forEach(function (el) {
+      if (!DATA.reviews.length) { var sec = el.closest('section'); (sec || el).hidden = true; return; }
       var n = +el.dataset.reviews || DATA.reviews.length;
       el.innerHTML = DATA.reviews.slice(0, n).map(function (r) {
         return '<figure class="review reveal" style="margin:0"><div class="review__stars" aria-label="' + (r.stars || 5) + ' stars">' + '★★★★★'.slice(0, r.stars || 5) + '</div><blockquote>“' + esc(r.quote) + '”</blockquote><footer><b>' + esc(r.name) + '</b>' + esc(r.from) + '</footer></figure>';
       }).join('');
     });
+  }
+
+  /* ---------------- Contact details (from /data/site.json; hidden while empty) ---------------- */
+  function siteHref(k, v) {
+    if (k === 'email') return 'mailto:' + v;
+    if (k === 'whatsapp') return 'https://wa.me/' + v.replace(/[^\d]/g, '');
+    return 'https://instagram.com/' + v.replace(/^@/, '');
+  }
+  function siteLabel(k, v) { return k === 'instagram' ? '@' + v.replace(/^@/, '') : (k === 'whatsapp' ? 'WhatsApp ' + v : v); }
+  function renderSite() {
+    var S = DATA.site || {};
+    document.querySelectorAll('[data-site]').forEach(function (el) {
+      var k = el.dataset.site, v = String(S[k] || '').trim();
+      if (!v) { el.remove(); return; }
+      var a = el.querySelector('a'); a.href = siteHref(k, v); a.textContent = el.closest('.contact-card') && k === 'whatsapp' ? v + ' · tap to chat' : siteLabel(k, v);
+      if (k !== 'email') a.rel = 'noopener';
+    });
+    document.querySelectorAll('[data-site-if]').forEach(function (el) {
+      var v = String(S[el.dataset.siteIf] || '').trim();
+      if (!v) { el.remove(); return; }
+      var a = el.querySelector('[data-site-link]'); a.href = siteHref('email', v); a.textContent = v;
+    });
+    document.querySelectorAll('[data-site-list]').forEach(function (ul) { if (!ul.children.length) ul.closest('div').remove(); });
+    document.querySelectorAll('[data-tour-count] b').forEach(function (b) { b.textContent = DATA.tours.length; });
   }
 
   /* ---------------- Journal (blog) ---------------- */
@@ -294,15 +320,19 @@
   }
   function mobileCta() {
     var c = document.createElement('div'); c.className = 'mobile-cta';
-    c.innerHTML = '<a class="btn btn--primary" href="/contact">Book a day</a><a class="btn btn--ghost" href="https://wa.me/355690000000" rel="noopener">WhatsApp</a>';
+    c.innerHTML = '<a class="btn btn--primary" href="/contact">Book a day</a>';
     document.body.appendChild(c);
+  }
+  function addWhatsAppCta() {
+    var c = document.querySelector('.mobile-cta'), w = String((DATA.site || {}).whatsapp || '').replace(/[^\d]/g, '');
+    if (c && w) c.insertAdjacentHTML('beforeend', '<a class="btn btn--ghost" href="https://wa.me/' + w + '" rel="noopener">WhatsApp</a>');
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     mobileCta(); renderLogos(); initNav();
     document.querySelectorAll('[data-year]').forEach(function (e) { e.textContent = new Date().getFullYear(); });
     loadData().then(function () {
-      renderTours(); renderReviews(); renderPosts(); renderArticle(); renderScenes(); initForm(); initReveal();
+      renderTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderArticle(); renderScenes(); initForm(); initReveal();
     });
   });
 })();
