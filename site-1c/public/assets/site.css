@@ -32,5 +32,3 @@
 
 /* Photos chosen in the admin (see applyContent in app.js) */
 img.slot-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.page-hero__bg.has-photo { display: block; position: absolute; inset: 0; opacity: .3; }
-.page-hero__bg.has-photo > img { filter: saturate(.9); }

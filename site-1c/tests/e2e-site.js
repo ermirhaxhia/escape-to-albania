@@ -16,7 +16,7 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
 
   // public site before: built-in picture and text
   await page.goto(BASE + '/');
-  await page.waitForSelector('.hero__frame svg');
+  await page.waitForSelector('.hero__cover svg');
   const before = await page.textContent('h1');
   log(/Small-group/.test(before), 'before: the built-in headline and illustration are shown');
 
@@ -56,12 +56,12 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   await page.waitForTimeout(5500);   // the site caches /api/content for 5 seconds
   // public site after
   await page.goto(BASE + '/');
-  await page.waitForSelector('.hero__frame img.slot-photo', { timeout: 8000 });
+  await page.waitForSelector('.hero__cover img.slot-photo', { timeout: 8000 });
   const h1 = await page.textContent('h1[data-slot]');
   const outlined = await page.locator('h1[data-slot] .outline').textContent();
   log(h1.startsWith('Private days across Albania'), 'public home shows the new headline: "' + h1 + '"');
   log(outlined === 'days', 'the *word* is shown with the outline style: "' + outlined + '"');
-  const src = await page.getAttribute('.hero__frame img.slot-photo', 'src');
+  const src = await page.getAttribute('.hero__cover img.slot-photo', 'src');
   const res = await page.evaluate((u) => fetch(u).then((r) => r.status + ' ' + r.headers.get('content-type')), src);
   log(/^200 image\/webp/.test(res), 'public home shows the chosen photo (' + src + ' -> ' + res + ')');
   const api = await page.evaluate(() => fetch('/api/content?lang=sq').then((r) => r.json()));
@@ -72,7 +72,7 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   await page.click('text=Faqja >> nth=0'); await page.waitForSelector('text=Hiq foton');
   await page.getByRole('button', { name: 'Hiq foton' }).first().click(); await page.waitForSelector('text=U ruajt');
   const t = page.locator('textarea').first(); await t.click(); await page.keyboard.press('Control+A'); await page.keyboard.press('Delete'); await page.waitForTimeout(6500);
-  await page.goto(BASE + '/'); await page.waitForSelector('.hero__frame svg', { timeout: 8000 });
+  await page.goto(BASE + '/'); await page.waitForSelector('.hero__cover svg', { timeout: 8000 });
   const back = await page.textContent('h1');
   log(/Small-group/.test(back), 'removing it brings back the built-in picture and headline');
 

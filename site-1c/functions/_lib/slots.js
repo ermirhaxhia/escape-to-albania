@@ -10,7 +10,7 @@
 
 export const SLOTS = [
   // Home
-  { key: 'home.hero_image', type: 'image', page: 'Home', label: 'Foto kryesore', hint: 'Fotoja e madhe në krye të faqes Home. Ideale horizontale, rreth 6:5 (p.sh. 1800 × 1500 px). Pritet vetë që të mbushë kornizën.' },
+  { key: 'home.hero_image', type: 'image', page: 'Home', label: 'Foto kryesore', hint: 'Fotoja e madhe në krye të faqes Home. Ideale horizontale, 16:9 (p.sh. 1920 × 1080 px), të paktën 2000 px e gjerë. Pritet vetë që të mbushë gjithë gjerësinë.' },
   { key: 'home.badge', type: 'toggle', page: 'Home', label: 'Rrethi mbi foto "Max … guests"', hint: 'Shfaq ose fshih rrethin e kuq mbi foto. Numri merret nga "Maks. mysafirë për grup" më poshtë.' },
   { key: 'home.hero_title', type: 'text', page: 'Home', label: 'Titulli kryesor (H1)', hint: 'Një titull i vetëm për faqe: Google e lexon si temën e faqes. Vendos *yje* rreth fjalës që do të dalë me kontur, p.sh. *days*.', fallback: 'Small-group *days* with a local guide.' },
   { key: 'home.hero_lead', type: 'text', page: 'Home', label: 'Nën-titulli (paragraf)', hint: 'Një ose dy fjali nën titull. Mund të shkruash {max} për numrin e mysafirëve.', fallback: 'A private day for a small group, at your pace, with someone who grew up here.' },
