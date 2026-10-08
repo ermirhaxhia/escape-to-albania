@@ -40,7 +40,7 @@ export async function onRequestPost({ request, env }) {
     tour: clean(body.tour, 80) || 'custom',
     date: clean(body.date, 10),
     time: '',
-    guests: Math.min(Math.max(parseInt(body.guests, 10) || 1, 1), 4),
+    guests: Math.min(Math.max(parseInt(body.guests, 10) || 1, 1), 50),
     pickup: clean(body.pickup, 200),
     status: 'New',
     createdAt: now,

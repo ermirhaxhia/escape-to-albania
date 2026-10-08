@@ -83,7 +83,7 @@ CREATE TABLE tours (
   key            TEXT NOT NULL UNIQUE,         -- stable id used in links (?tour=theth), never changes
   hours          INTEGER,
   price_from     INTEGER,                      -- EUR per person
-  max_guests     INTEGER NOT NULL DEFAULT 4 CHECK (max_guests BETWEEN 1 AND 4),
+  max_guests     INTEGER CHECK (max_guests >= 1),   -- NULL = use settings.default_max_guests (set by the guide)
   published      INTEGER NOT NULL DEFAULT 0,
   featured       INTEGER NOT NULL DEFAULT 0,
   sort_order     INTEGER NOT NULL DEFAULT 0,
@@ -253,7 +253,7 @@ CREATE TABLE requests (
   tour_title       TEXT NOT NULL DEFAULT '',   -- title at the time, so history survives later edits
   preferred_date   TEXT,
   start_time       TEXT NOT NULL DEFAULT '',
-  guests           INTEGER NOT NULL DEFAULT 2 CHECK (guests BETWEEN 1 AND 4),
+  guests           INTEGER NOT NULL DEFAULT 2 CHECK (guests >= 1),   -- the group limit is a setting, not a database rule
   pickup           TEXT NOT NULL DEFAULT '',
   message          TEXT NOT NULL DEFAULT '',
   notes            TEXT NOT NULL DEFAULT '',   -- internal, never shown to the guest
@@ -280,7 +280,7 @@ CREATE TABLE request_events (
 CREATE INDEX request_events_request ON request_events (request_id, created_at);
 
 -- ---------------------------------------------------------------- settings
--- Plain key/value: contact_email, contact_whatsapp, contact_instagram, notify_emails,
+-- Plain key/value: default_max_guests (group size limit, the guide decides), contact_email, contact_whatsapp, contact_instagram, notify_emails,
 -- seo_title_pattern, default_og_media_id, ga4_property_id, search_console_domain…
 CREATE TABLE settings (
   key        TEXT PRIMARY KEY,

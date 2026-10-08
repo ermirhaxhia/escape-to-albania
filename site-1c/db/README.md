@@ -29,4 +29,5 @@ Later changes go in new files (`0002_*.sql`, …). Never edit a migration that a
 | System | `settings` (key/value), `users` (role by email; sign-in by Cloudflare Access) |
 
 Rules: texts live in `*_i18n`, one row per language, shown only when `ready = 1`. Slugs are unique per language.
-HTML (`body_html`, `answer_html`) must be sanitized by the API before saving. Not in v1: `customers`, `blocked_dates` (calendar), payments beyond a deposit.
+HTML (`body_html`, `answer_html`) must be sanitized by the API before saving. Group size: `settings.default_max_guests` (now 4) is the limit; a tour can override it with `tours.max_guests`. The database has no fixed maximum.
+Not in v1: `customers`, `blocked_dates` (calendar), payments beyond a deposit.

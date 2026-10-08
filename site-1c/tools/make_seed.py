@@ -23,7 +23,7 @@ for i, key in enumerate(['home', 'tours', 'about', 'journal', 'contact'], 1):
     out.append(f"INSERT INTO pages (id, key) VALUES ({i}, {q(key)});")
 
 out += ['', '-- Settings (fill in from the admin)']
-for k, v in [('contact_email', ''), ('contact_whatsapp', ''), ('contact_instagram', ''), ('notify_emails', ''),
+for k, v in [('default_max_guests', '4'), ('contact_email', ''), ('contact_whatsapp', ''), ('contact_instagram', ''), ('notify_emails', ''),
              ('seo_title_pattern', '%title% | Escape to Albania'), ('ga4_property_id', ''), ('search_console_domain', '')]:
     out.append(f"INSERT INTO settings (key, value) VALUES ({q(k)}, {q(v)});")
 
@@ -31,7 +31,7 @@ out += ['', '-- Tours']
 step_id = incl_id = 0
 for ti, t in enumerate(tours, 1):
     out += [f"INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES "
-            f"({ti}, {q(t['slug'])}, {n(t.get('hours'))}, {n(t.get('price'))}, {n(t.get('max') or 4)}, {1 if t.get('published', True) else 0}, {1 if t.get('featured') else 0}, {ti}, {q(t.get('scene'))}, {n(t.get('seed'))});",
+            f"({ti}, {q(t['slug'])}, {n(t.get('hours'))}, {n(t.get('price'))}, NULL, {1 if t.get('published', True) else 0}, {1 if t.get('featured') else 0}, {ti}, {q(t.get('scene'))}, {n(t.get('seed'))});",
             f"INSERT INTO tour_i18n (tour_id, lang, slug, title, short, ready) VALUES ({ti}, 'en', {q(t['slug'])}, {q(t['title'])}, {q(t.get('short', ''))}, 1);"]
     for tag in str(t.get('tags', '')).split():
         if tag in tag_id:

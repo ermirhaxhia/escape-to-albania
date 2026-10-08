@@ -18,6 +18,7 @@ INSERT INTO pages (id, key) VALUES (4, 'journal');
 INSERT INTO pages (id, key) VALUES (5, 'contact');
 
 -- Settings (fill in from the admin)
+INSERT INTO settings (key, value) VALUES ('default_max_guests', '4');
 INSERT INTO settings (key, value) VALUES ('contact_email', '');
 INSERT INTO settings (key, value) VALUES ('contact_whatsapp', '');
 INSERT INTO settings (key, value) VALUES ('contact_instagram', '');
@@ -27,7 +28,7 @@ INSERT INTO settings (key, value) VALUES ('ga4_property_id', '');
 INSERT INTO settings (key, value) VALUES ('search_console_domain', '');
 
 -- Tours
-INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (1, 'theth', 12, 95, 4, 1, 1, 1, 'mountain', 3);
+INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (1, 'theth', 12, 95, NULL, 1, 1, 1, 'mountain', 3);
 INSERT INTO tour_i18n (tour_id, lang, slug, title, short, ready) VALUES (1, 'en', 'theth', 'Theth Valley & Grunas Waterfall', 'Over the Albanian Alps by road, then a gentle walk to the Grunas waterfall and the Blue Eye of Theth.', 1);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (1, 1);
 INSERT INTO tour_steps (id, tour_id, sort_order, time) VALUES (1, 1, 1, '07:30');
@@ -50,7 +51,7 @@ INSERT INTO tour_included (id, tour_id, sort_order) VALUES (4, 1, 4);
 INSERT INTO tour_included_i18n (included_id, lang, text) VALUES (4, 'en', 'Hotel pickup');
 INSERT INTO seo (owner_type, owner_id, lang, title, description, focus_keyword, noindex) VALUES ('tour', 1, 'en', 'Theth Valley & Grunas Waterfall | Escape to Albania', 'Over the Albanian Alps by road, then a gentle walk to the Grunas waterfall and the Blue Eye of Theth.', '', 0);
 
-INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (2, 'koman', 11, 90, 4, 1, 0, 2, 'lake', 5);
+INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (2, 'koman', 11, 90, NULL, 1, 0, 2, 'lake', 5);
 INSERT INTO tour_i18n (tour_id, lang, slug, title, short, ready) VALUES (2, 'en', 'koman', 'Lake Koman & Valbona Ferry', 'Three hours on a ferry between sheer cliffs: one of the most beautiful boat rides in Europe.', 1);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (2, 1);
 INSERT INTO tour_steps (id, tour_id, sort_order, time) VALUES (6, 2, 1, '06:30');
@@ -73,7 +74,7 @@ INSERT INTO tour_included (id, tour_id, sort_order) VALUES (8, 2, 4);
 INSERT INTO tour_included_i18n (included_id, lang, text) VALUES (8, 'en', 'Hotel pickup');
 INSERT INTO seo (owner_type, owner_id, lang, title, description, focus_keyword, noindex) VALUES ('tour', 2, 'en', 'Lake Koman & Valbona Ferry | Escape to Albania', 'Three hours on a ferry between sheer cliffs: one of the most beautiful boat rides in Europe.', '', 0);
 
-INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (3, 'shkoder', 9, 65, 4, 1, 0, 3, 'lake', 9);
+INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (3, 'shkoder', 9, 65, NULL, 1, 0, 3, 'lake', 9);
 INSERT INTO tour_i18n (tour_id, lang, slug, title, short, ready) VALUES (3, 'en', 'shkoder', 'Shkodër, Rozafa & the Lake', 'The old Catholic heart of Albania: Rozafa castle, Marubi photo museum and a sunset over the lake.', 1);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (3, 1);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (3, 2);
@@ -97,7 +98,7 @@ INSERT INTO tour_included (id, tour_id, sort_order) VALUES (12, 3, 4);
 INSERT INTO tour_included_i18n (included_id, lang, text) VALUES (12, 'en', 'Hotel pickup');
 INSERT INTO seo (owner_type, owner_id, lang, title, description, focus_keyword, noindex) VALUES ('tour', 3, 'en', 'Shkodër, Rozafa & the Lake | Escape to Albania', 'The old Catholic heart of Albania: Rozafa castle, Marubi photo museum and a sunset over the lake.', '', 0);
 
-INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (4, 'tirana', 6, 55, 4, 1, 0, 4, 'city', 2);
+INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (4, 'tirana', 6, 55, NULL, 1, 0, 4, 'city', 2);
 INSERT INTO tour_i18n (tour_id, lang, slug, title, short, ready) VALUES (4, 'en', 'tirana', 'Tirana Food & Bunk’Art Walk', 'The capital through its kitchens and its history: byrek at dawn, Blloku, the Pyramid and the bunker museum.', 1);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (4, 4);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (4, 2);
@@ -121,7 +122,7 @@ INSERT INTO tour_included (id, tour_id, sort_order) VALUES (16, 4, 4);
 INSERT INTO tour_included_i18n (included_id, lang, text) VALUES (16, 'en', 'Walking route map');
 INSERT INTO seo (owner_type, owner_id, lang, title, description, focus_keyword, noindex) VALUES ('tour', 4, 'en', 'Tirana Food & Bunk’Art Walk | Escape to Albania', 'The capital through its kitchens and its history: byrek at dawn, Blloku, the Pyramid and the bunker museum.', '', 0);
 
-INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (5, 'berat', 10, 75, 4, 1, 1, 5, 'castle', 4);
+INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (5, 'berat', 10, 75, NULL, 1, 1, 5, 'castle', 4);
 INSERT INTO tour_i18n (tour_id, lang, slug, title, short, ready) VALUES (5, 'en', 'berat', 'Berat, the City of a Thousand Windows', 'A UNESCO town of white Ottoman houses stacked up a hillside, with a living castle on top.', 1);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (5, 2);
 INSERT INTO tour_steps (id, tour_id, sort_order, time) VALUES (21, 5, 1, '08:30');
@@ -144,7 +145,7 @@ INSERT INTO tour_included (id, tour_id, sort_order) VALUES (20, 5, 4);
 INSERT INTO tour_included_i18n (included_id, lang, text) VALUES (20, 'en', 'Hotel pickup');
 INSERT INTO seo (owner_type, owner_id, lang, title, description, focus_keyword, noindex) VALUES ('tour', 5, 'en', 'Berat, the City of a Thousand Windows | Escape to Albania', 'A UNESCO town of white Ottoman houses stacked up a hillside, with a living castle on top.', '', 0);
 
-INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (6, 'gjirokaster', 13, 85, 4, 1, 0, 6, 'castle', 7);
+INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (6, 'gjirokaster', 13, 85, NULL, 1, 0, 6, 'castle', 7);
 INSERT INTO tour_i18n (tour_id, lang, slug, title, short, ready) VALUES (6, 'en', 'gjirokaster', 'Gjirokastër & the Blue Eye', 'The stone city and its fortress, then a swim at the cold, impossibly blue spring of Syri i Kaltër.', 1);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (6, 2);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (6, 3);
@@ -168,7 +169,7 @@ INSERT INTO tour_included (id, tour_id, sort_order) VALUES (24, 6, 4);
 INSERT INTO tour_included_i18n (included_id, lang, text) VALUES (24, 'en', 'Hotel pickup');
 INSERT INTO seo (owner_type, owner_id, lang, title, description, focus_keyword, noindex) VALUES ('tour', 6, 'en', 'Gjirokastër & the Blue Eye | Escape to Albania', 'The stone city and its fortress, then a swim at the cold, impossibly blue spring of Syri i Kaltër.', '', 0);
 
-INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (7, 'ksamil', 11, 85, 4, 1, 1, 7, 'coast', 6);
+INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (7, 'ksamil', 11, 85, NULL, 1, 1, 7, 'coast', 6);
 INSERT INTO tour_i18n (tour_id, lang, slug, title, short, ready) VALUES (7, 'en', 'ksamil', 'Ksamil & Butrint', 'Ancient Butrint in the morning, turquoise water at Ksamil in the afternoon, grilled fish in between.', 1);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (7, 3);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (7, 2);
@@ -192,7 +193,7 @@ INSERT INTO tour_included (id, tour_id, sort_order) VALUES (28, 7, 4);
 INSERT INTO tour_included_i18n (included_id, lang, text) VALUES (28, 'en', 'Hotel pickup');
 INSERT INTO seo (owner_type, owner_id, lang, title, description, focus_keyword, noindex) VALUES ('tour', 7, 'en', 'Ksamil & Butrint | Escape to Albania', 'Ancient Butrint in the morning, turquoise water at Ksamil in the afternoon, grilled fish in between.', '', 0);
 
-INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (8, 'llogara', 11, 80, 4, 1, 0, 8, 'road', 8);
+INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES (8, 'llogara', 11, 80, NULL, 1, 0, 8, 'road', 8);
 INSERT INTO tour_i18n (tour_id, lang, slug, title, short, ready) VALUES (8, 'en', 'llogara', 'Llogara Pass & Himara Riviera', 'Pine forests at 1,000 m, then switchbacks down to the Ionian Sea and the quiet beaches of Dhërmi and Himara.', 1);
 INSERT INTO tour_tags (tour_id, tag_id) VALUES (8, 3);
 INSERT INTO tour_steps (id, tour_id, sort_order, time) VALUES (36, 8, 1, '08:00');
