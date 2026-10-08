@@ -17,14 +17,19 @@ site-1c/
 │   ├── contact.html        Rezervimi
 │   ├── 404.html
 │   ├── admin/index.html    CMS (admin), noindex
-│   ├── data/               Përmbajtja: tours.json, articles.json, reviews.json
+│   ├── tour.html           Kuadri i faqes së turit (menu, footer); përmbajtjen e mbush functions/tours/[slug].js
+│   ├── data/               Përmbajtja: articles.json, reviews.json, site.json
 │   ├── assets/             base.css, theme.css (1C), site.css, app.js, model.js
 │   ├── _redirects          URL të bukura për /blog/<slug> dhe /tours/<slug>
 │   ├── _headers            Siguria + noindex për /admin
 │   ├── robots.txt, sitemap.xml
 ├── functions/api/requests.js   Formulari i rezervimit (POST) → D1
 ├── functions/api/admin/        requests (GET lista) dhe requests/[id] (PATCH statusi, shënimet) për admin-in
-├── functions/api/tours.js      Turet nga D1 (GET ?lang=en)
+├── functions/api/tours.js      Turet publike nga D1 (GET ?lang=en)
+├── functions/tours/[slug].js   Faqja e plotë e çdo turi (SSR, meta tags, JSON-LD); një tur i ri ka faqen e vet vetë
+├── functions/sitemap.xml.js    Sitemap nga databaza (çdo tur i publikuar hyn vetë)
+├── functions/api/admin/tours   CRUD i turit për CMS (lista, krijim, ruajtje, çelësat, fshirje)
+├── functions/_lib/tours.js     Validimi dhe ruajtja e një turi në një transaksion
 ├── functions/api/config.js     Cilësime publike (limiti i grupit) nga D1
 ├── functions/_lib/http.js      Ndihmëse: JSON, pastrim teksti, mbrojtja me ADMIN_TOKEN
 ├── functions/api/content.js    Foto dhe tekste të faqes që ndryshohen nga admin-i (publike, GET ?lang=en)
@@ -77,7 +82,7 @@ Provë lokale: `npx wrangler pages dev public --kv REQUESTS --binding ADMIN_TOKE
 - `reviews.json` dhe `articles.json` janë bosh. Seksioni i vlerësimeve fshihet derisa të shtosh të parin.
 - Foto: vendosi te `public/media/` dhe shkruaj `"cover": "/media/emri.jpg"`.
 
-**Kujdes:** `admin/index.html` hap aplikacionin e admin-it në ekran të plotë (desktop, ose pamjen mobile në telefon), duke filluar nga Sign in. Kërkesat e rezervimit janë të lidhura me databazën (lista, statusi, shënimet). Pjesët e tjera (tour, artikuj, foto, SEO, cilësime) janë ende dizajn i klikueshëm që nuk ruan, dhe nuk ka më të dhëna shembull (rezervime, artikuj, foto, përdorues, numra analitikë janë bosh). Turet vijnë nga `data/tours.json`. Hapi tjetër është ta lidhim admin-in me `/api/requests` (kërkesat vijnë tashmë aty)
+**Kujdes:** `admin/index.html` hap aplikacionin e admin-it në ekran të plotë (desktop, ose pamjen mobile në telefon), duke filluar nga Sign in. Kërkesat e rezervimit janë të lidhura me databazën (lista, statusi, shënimet). Pjesët e tjera (artikuj, SEO e përgjithshme, cilësime, Analytics) janë ende dizajn i klikueshëm që nuk ruan, dhe nuk ka më të dhëna shembull (rezervime, artikuj, foto, përdorues, numra analitikë janë bosh). Turet, kërkesat, fotot dhe fushat e faqes ruhen në databazë. Hapi tjetër është ta lidhim admin-in me `/api/requests` (kërkesat vijnë tashmë aty)
 dhe me ruajtjen e tureve/postimeve (p.sh. Cloudflare D1 ose commit-e në GitHub që rindërtojnë faqen).
 
 ## Çfarë ndryshohet nga CMS te faqja "Faqja"
@@ -88,3 +93,9 @@ Në CMS fushat janë të grupuara në seksione të palosshme (vetëm i pari ësh
 **Maks. mysafirë për grup** është një cilësim i vetëm (`settings.default_max_guests`): e lexojnë rrethi mbi foto, tekstet, lista te formulari dhe kontrolli i rezervimeve. Meta description nuk e përmbajnë numrin.
 
 Ikonat (zarf, bisedë, vendndodhje, Instagram, zemër, diell, euro, shenjë) janë SVG inline nga Lucide (licenca ISC) dhe marrin ngjyrën e tekstit. Nuk kërkohen skedarë të jashtëm.
+
+Shpjegimet për përdoruesin janë te `public/admin/udhezues.html` (hapet nga menuja e panelit, "Udhëzues"): atje shkojnë, jo te format. Kur shtohet një fushë ose ekran i ri te paneli, përditësoje atë faqe.
+
+## Turet
+
+Turi jeton në D1 (tabelat `tours`, `tour_i18n`, `tour_tags`, `tour_steps`, `tour_included`, `tour_media`, `seo`). Admin-i i ruan në një transaksion (`functions/_lib/tours.js`). Kur publikohet, `/tours/<slug>` e shërben nga serveri (`functions/tours/[slug].js`), kështu që Google dhe WhatsApp e shohin përmbajtjen pa JavaScript. `db/seed-tours.json` është vetëm burimi i seed-it fillestar (`tools/make_seed.py`), nuk shërbehet publikisht. Teksti shqip i turit ka tabelat gati por ende nuk ka ekran.

@@ -39,6 +39,15 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   log(notes.every((n) => !body.includes(n)), 'no explanatory notes under the fields');
   log(!body.includes('Hapi 2: teksti'), 'the other sections are folded (their fields are not shown yet)');
 
+  const ph = await admin.$$eval('textarea, input[type=number]', (e) => e.filter((x) => x.placeholder).length);
+  log(ph === 0, 'no grey hint text inside the boxes');
+  const firstBox = admin.locator('textarea').first();
+  log((await firstBox.inputValue()) === 'Small-group *days* with a local guide.', 'the box shows the real text that is on the page (not a faint hint)');
+  const dark = await firstBox.evaluate((e) => getComputedStyle(e).color);
+  log(dark === 'rgb(16, 24, 40)', 'text in the boxes is dark ' + dark);
+  const guide = await admin.evaluate(() => fetch('/admin/udhezues.html').then((r) => r.text().then((t) => ({ s: r.status, ok: t.includes('Si ta përdorësh panelin') }))));
+  log(guide.s === 200 && guide.ok && (await admin.textContent('body')).includes('Udhëzues'), 'the guide page exists and is linked in the menu');
+
   await admin.getByRole('button', { name: /Si funksionon/ }).click();
   await admin.waitForSelector('text=Hapi 2: titulli');
   const box = admin.locator('textarea').nth(5);   // Kopertina has 2 text fields (H1, lead) x2 languages, then the H2 of "Turet" is folded: so next is "Si funksionon"
