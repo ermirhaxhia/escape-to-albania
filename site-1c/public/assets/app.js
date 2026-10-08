@@ -215,6 +215,26 @@
     document.querySelectorAll('[data-tour-count] b').forEach(function (b) { b.textContent = DATA.tours.length; });
   }
 
+  /* ---------------- Editable content (photos and texts set from the admin, /api/content) ---------------- */
+  function slotHtml(v) { return esc(v).replace(/\*(.+?)\*/g, '<span class="outline">$1</span>'); }
+  function setPhoto(el, im) {
+    var old = el.querySelector(':scope > svg'); if (old) old.remove();
+    var prev = el.querySelector(':scope > img.slot-photo'); if (prev) prev.remove();
+    el.classList.add('has-photo');
+    var img = document.createElement('img');
+    img.className = 'slot-photo'; img.src = im.url; img.alt = im.alt || ''; img.decoding = 'async';
+    if (im.width) img.width = im.width; if (im.height) img.height = im.height;
+    el.insertBefore(img, el.firstChild);
+  }
+  function applyContent() {
+    var lang = document.documentElement.lang || 'en';
+    return fetch('/api/content?lang=' + encodeURIComponent(lang)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (c) {
+      if (!c) return;
+      document.querySelectorAll('[data-slot]').forEach(function (el) { var v = (c.texts || {})[el.dataset.slot]; if (v) el.innerHTML = slotHtml(v); });
+      document.querySelectorAll('[data-slot-img]').forEach(function (el) { var im = (c.images || {})[el.dataset.slotImg]; if (im) setPhoto(el, im); });
+    });
+  }
+
   /* ---------------- Journal (blog) ---------------- */
   function postCard(a) {
     return '<article class="tour post reveal" data-tags="' + esc(String(a.cat).toLowerCase().replace(/\s+/g, '-')) + '">' +
@@ -341,7 +361,7 @@
     mobileCta(); renderLogos(); initNav();
     document.querySelectorAll('[data-year]').forEach(function (e) { e.textContent = new Date().getFullYear(); });
     loadData().then(function () {
-      renderTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderArticle(); renderScenes(); initForm(); initReveal();
+      renderTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderArticle(); renderScenes(); applyContent(); initForm(); initReveal();
     });
   });
 })();

@@ -27,6 +27,10 @@ site-1c/
 ├── functions/api/tours.js      Turet nga D1 (GET ?lang=en)
 ├── functions/api/config.js     Cilësime publike (limiti i grupit) nga D1
 ├── functions/_lib/http.js      Ndihmëse: JSON, pastrim teksti, mbrojtja me ADMIN_TOKEN
+├── functions/api/content.js    Foto dhe tekste të faqes që ndryshohen nga admin-i (publike, GET ?lang=en)
+├── functions/api/admin/content Faqja: GET të gjitha vendet e ndryshueshme, PUT ruan tekst ose foto
+├── functions/_lib/slots.js     Lista e vendeve të ndryshueshme (shto këtu për të bërë diçka tjetër të ndryshueshme)
+├── tests/                      Teste me browser: kërkesat, fotot, Faqja, shqipja e admin-it
 ├── functions/api/admin/media   Fotot: GET lista, POST ngarkim (WebP), media/[id] PATCH alt/përshkrim, DELETE
 ├── functions/media/[[path]].js Shërben fotot nga R2 në /media/photos/…
 ├── db/                         Skema D1, seed, README

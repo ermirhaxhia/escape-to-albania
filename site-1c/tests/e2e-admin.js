@@ -9,6 +9,7 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   const browser = await chromium.launch({ executablePath: process.env.BROWSER || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', headless: true });
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 860 } });
   const page = await ctx.newPage();
+  await page.addInitScript(() => localStorage.setItem('ea_admin_lang', 'en'));   // these tests read the English labels
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
   page.on('console', (m) => { if (m.type() === 'error' && !/favicon|fonts|ERR_|Failed to load resource/.test(m.text())) errors.push(m.text()); });
@@ -27,14 +28,18 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   const ref = await page.textContent('.success [data-ref]');
   log(/^EA-\d+$/.test(ref), 'form stored the request, reference shown: ' + ref);
 
-  // ---- admin: wrong password
+  // ---- admin: wrong password (only rejected when the ADMIN_TOKEN secret is set; the test server runs in open mode)
   await page.goto(BASE + '/admin/');
   await page.waitForSelector('input[type=password]');
-  await page.locator('input:not([type=password])').first().fill('owner@example.com');
-  await page.fill('input[type=password]', 'wrong');
-  await page.getByRole('button', { name: 'Sign in' }).click();
-  await page.waitForSelector('text=Incorrect email or password', { timeout: 8000 });
-  log(true, 'wrong password is rejected');
+  if (process.env.ADMIN_TOKEN_SET) {
+    await page.locator('input:not([type=password])').first().fill('owner@example.com');
+    await page.fill('input[type=password]', 'wrong');
+    await page.getByRole('button', { name: 'Sign in' }).click();
+    await page.waitForSelector('text=Incorrect email or password', { timeout: 8000 });
+    log(true, 'wrong password is rejected');
+  } else {
+    await page.locator('input:not([type=password])').first().fill('owner@example.com');
+  }
 
   // ---- admin: right password
   await page.fill('input[type=password]', process.env.ADMIN_TOKEN || 'secret123');

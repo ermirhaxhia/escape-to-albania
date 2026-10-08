@@ -6,6 +6,7 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.BROWSER || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', headless: true });
   const page = await (await browser.newContext({ viewport: { width: 1280, height: 860 } })).newPage();
+  await page.addInitScript(() => localStorage.setItem('ea_admin_lang', 'en'));   // these tests read the English labels
   const errors = []; page.on('pageerror', (e) => errors.push(String(e)));
   page.on('console', (m) => { if (m.type() === 'error' && !/favicon|fonts|ERR_|Failed to load resource/.test(m.text())) errors.push(m.text()); });
 
