@@ -15,11 +15,11 @@ function same(a, b) {
   return r === 0;
 }
 
-// Beta protection for the admin API: "Authorization: Bearer <ADMIN_TOKEN>".
-// Once /admin sits behind Cloudflare Access this is replaced by the verified Access identity.
-// Returns null when allowed, otherwise the Response to send back.
+// Admin API protection. TEST MODE: while the ADMIN_TOKEN secret is not set, the admin API is open
+// (any email and password open the admin). To lock it later, add ADMIN_TOKEN in Cloudflare
+// (or put /admin behind Cloudflare Access). Returns null when allowed, otherwise the Response to send back.
 export function requireAdmin(request, env) {
-  if (!env.ADMIN_TOKEN) return json({ error: 'Admin is not configured (ADMIN_TOKEN is missing)' }, 503);
+  if (!env.ADMIN_TOKEN) return null;
   const auth = request.headers.get('Authorization') || '';
   if (!auth.startsWith('Bearer ') || !same(auth.slice(7), env.ADMIN_TOKEN)) return json({ error: 'Unauthorized' }, 401);
   return null;

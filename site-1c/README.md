@@ -42,7 +42,7 @@ site-1c/
    - **Root directory:** `site-1c`
    - **Build output directory:** `public`
 3. **Databaza:** shih `db/README.md` (krijo D1, migrimi, seed). Lidhja `DB` është te `wrangler.toml`.
-4. **Fjalëkalimi i admin-it:** Settings → Variables and Secrets → shto `ADMIN_TOKEN` (Encrypted), një fjalëkalim i gjatë. Ky është fjalëkalimi që shkruan te hyrja e `/admin/` (email-i mund të jetë çfarëdo për beta). Pa të, API-ja e admin-it kthen 503.
+4. **Admin (test):** për beta, admin-i është i hapur: çdo email dhe fjalëkalim të lejon të hysh. Kur të jetë projekti i vërtetë, shto sekretin `ADMIN_TOKEN` (ose vendos `/admin` pas Cloudflare Access) dhe mbrojtja aktivizohet vetë.
 5. **Mbro /admin:** Zero Trust → Access → Applications → Self-hosted, domain `escapetoalbania.com/admin*`
    (dhe `/api/requests` për GET), lejo vetëm email-et e agjencisë.
 6. **Nga vijnë vizitorët (Analytics në admin):**
