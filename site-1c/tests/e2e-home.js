@@ -15,7 +15,7 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   // ---------- layout, three screen sizes
   for (const [w, h, name] of [[1280, 800, 'laptop 1280x800'], [1440, 900, 'desktop 1440x900'], [390, 844, 'phone 390x844']]) {
     const page = await (await browser.newContext({ viewport: { width: w, height: h } })).newPage(); watch(page);
-    await page.goto(BASE + '/'); await page.waitForSelector('.hero__frame');
+    await page.goto(BASE + '/'); await page.waitForSelector('.hero__cover');
     await page.waitForTimeout(1500);
     const m = await page.evaluate(() => {
       const h1 = document.querySelector('.hero h1'), cs = getComputedStyle(h1);
@@ -24,13 +24,16 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
       return {
         lines: Math.round(h1.getBoundingClientRect().height / lh), font: Math.round(parseFloat(cs.fontSize)),
         ctaBottom: Math.round(document.querySelector('.hero__cta').getBoundingClientRect().bottom),
-        frame: document.querySelector('.hero__frame').getBoundingClientRect().width | 0,
+        frame: document.querySelector('.hero__cover').getBoundingClientRect().width | 0,
+        coverH: document.querySelector('.hero__cover').getBoundingClientRect().height | 0,
+        cardBg: getComputedStyle(document.querySelector('.hero__card')).backgroundColor,
         eyebrowTop: Math.round(eb.top), hscroll: document.documentElement.scrollWidth > innerWidth
       };
     });
     log(m.ctaBottom <= h, name + ': the "Book a day" buttons end at ' + m.ctaBottom + 'px, inside the first screen (' + h + 'px)');
     if (w > 900) log(m.lines <= 3, name + ': headline is ' + m.lines + ' lines at ' + m.font + 'px');
-    if (w > 900) log(m.frame >= 520, name + ': photo is ' + m.frame + 'px wide');
+    if (w > 900) log(m.frame >= w - 20 && m.coverH >= 480, name + ': the photo spans the whole width (' + m.frame + 'px) and is ' + m.coverH + 'px tall');
+    log(m.cardBg !== 'rgba(0, 0, 0, 0)', name + ': the text sits on a solid card, so it is readable on any photo');
     log(m.eyebrowTop >= 70 || w < 700, name + ': the top label starts at ' + m.eyebrowTop + 'px, below the menu');
     log(!m.hscroll, name + ': no sideways scroll');
     await page.close();
@@ -56,7 +59,7 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
 
   const site = await ctx.newPage(); watch(site);
   await site.waitForTimeout(100);
-  await site.goto(BASE + '/'); await site.waitForSelector('.hero__frame'); await site.waitForTimeout(2500);
+  await site.goto(BASE + '/'); await site.waitForSelector('.hero__cover'); await site.waitForTimeout(2500);
   const t = await site.evaluate(() => ({
     badge: document.querySelector('.badge b').textContent,
     marquee: document.querySelector('.marquee__track').textContent.includes('Max 6 guests'),
@@ -81,7 +84,7 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   await admin.getByRole('button', { name: 'Aktiv', exact: true }).first().click();
   await admin.waitForSelector('text=U fsheh', { timeout: 5000 });
   await site.waitForTimeout(6500);
-  await site.goto(BASE + '/'); await site.waitForSelector('.hero__frame'); await site.waitForTimeout(2000);
+  await site.goto(BASE + '/'); await site.waitForSelector('.hero__cover'); await site.waitForTimeout(2000);
   log(!(await site.locator('.badge').isVisible()), 'home: with the switch off the badge is hidden');
 
   // ---------- put everything back
@@ -89,7 +92,7 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   await num.click(); await admin.keyboard.press('Control+A'); await admin.keyboard.type('4');
   await admin.waitForTimeout(1500);
   await site.waitForTimeout(6500);
-  await site.goto(BASE + '/'); await site.waitForSelector('.hero__frame'); await site.waitForTimeout(2000);
+  await site.goto(BASE + '/'); await site.waitForSelector('.hero__cover'); await site.waitForTimeout(2000);
   log((await site.textContent('.badge b')) === '4' && (await site.locator('.badge').isVisible()), 'back to 4 and the badge is visible again');
 
   log(errors.length === 0, 'no console errors' + (errors.length ? ': ' + errors.slice(0, 3).join(' | ') : ''));

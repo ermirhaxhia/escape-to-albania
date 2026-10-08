@@ -234,6 +234,7 @@
     var old = el.querySelector(':scope > svg'); if (old) old.remove();
     var prev = el.querySelector(':scope > img.slot-photo'); if (prev) prev.remove();
     el.classList.add('has-photo');
+    var ph = el.closest('.page-hero'); if (ph) ph.classList.add('page-hero--photo');
     var img = document.createElement('img');
     img.className = 'slot-photo'; img.src = im.url; img.alt = im.alt || ''; img.decoding = 'async';
     if (im.width) img.width = im.width; if (im.height) img.height = im.height;
