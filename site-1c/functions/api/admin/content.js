@@ -24,12 +24,12 @@ export async function onRequestGet({ request, env }) {
 
   return json({
     slots: SLOTS.map((s) => s.type === 'toggle'
-      ? { key: s.key, type: 'toggle', page: s.page, label: s.label, hint: s.hint || '', on: ((t[s.key] || {}).en || 'on') !== 'off' }
+      ? { key: s.key, type: 'toggle', page: s.page, section: s.section || '', label: s.label, on: ((t[s.key] || {}).en || 'on') !== 'off' }
       : s.type === 'setting'
-      ? { key: s.key, type: 'setting', page: s.page, label: s.label, hint: s.hint || '', min: s.min, max: s.max, value: st[s.setting] || '4' }
+      ? { key: s.key, type: 'setting', page: s.page, section: s.section || '', label: s.label, min: s.min, max: s.max, value: st[s.setting] || '4' }
       : s.type === 'image'
-      ? { key: s.key, type: 'image', page: s.page, label: s.label, hint: s.hint || '', mediaId: im[s.key] && im[s.key].media_id ? String(im[s.key].media_id) : null, url: im[s.key] && im[s.key].r2_key ? '/media/' + im[s.key].r2_key : null }
-      : { key: s.key, type: 'text', page: s.page, label: s.label, hint: s.hint || '', fallback: s.fallback || '', en: (t[s.key] || {}).en || '', sq: (t[s.key] || {}).sq || '' })
+      ? { key: s.key, type: 'image', page: s.page, section: s.section || '', label: s.label, mediaId: im[s.key] && im[s.key].media_id ? String(im[s.key].media_id) : null, url: im[s.key] && im[s.key].r2_key ? '/media/' + im[s.key].r2_key : null }
+      : { key: s.key, type: 'text', page: s.page, section: s.section || '', label: s.label, fallback: s.fallback || '', en: (t[s.key] || {}).en || '', sq: (t[s.key] || {}).sq || '' })
   });
 }
 

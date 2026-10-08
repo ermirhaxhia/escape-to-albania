@@ -265,6 +265,7 @@
     document.querySelectorAll('[data-posts]').forEach(function (el) {
       var n = +el.dataset.posts || DATA.articles.length;
       var list = DATA.articles.slice(0, n);
+      if (!list.length && el.hasAttribute('data-hide-empty')) { var sec = el.closest('section'); if (sec) sec.hidden = true; return; }
       el.innerHTML = list.length ? list.map(postCard).join('') : '<p class="lead">New stories from the road are coming soon.</p>';
     });
     var chips = document.querySelector('[data-post-filters]');
