@@ -86,3 +86,5 @@ Lista është te `functions/_lib/slots.js`. Çdo fushë është një **foto**, n
 Titujt janë gjithmonë H1 dhe rreshtat nën ta paragrafë: guida ndryshon fjalët, jo strukturën. Në tekste, `*fjala*` del me kontur dhe `{max}` bëhet numri i mysafirëve.
 Në CMS fushat janë të grupuara në seksione të palosshme (vetëm i pari është i hapur): te Home janë Kopertina, Turet e zgjedhura, Si funksionon, Pse një vendas, Journal dhe Thirrja e fundit. Blloku Journal fshihet vetë derisa të ketë një artikull të publikuar.
 **Maks. mysafirë për grup** është një cilësim i vetëm (`settings.default_max_guests`): e lexojnë rrethi mbi foto, tekstet, lista te formulari dhe kontrolli i rezervimeve. Meta description nuk e përmbajnë numrin.
+
+Ikonat (zarf, bisedë, vendndodhje, Instagram, zemër, diell, euro, shenjë) janë SVG inline nga Lucide (licenca ISC) dhe marrin ngjyrën e tekstit. Nuk kërkohen skedarë të jashtëm.
