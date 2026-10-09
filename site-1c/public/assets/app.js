@@ -193,7 +193,7 @@
   /* ---------------- Reviews ---------------- */
   function renderReviews() {
     document.querySelectorAll('[data-reviews]').forEach(function (el) {
-      if (!DATA.reviews.length) { var sec = el.closest('section'); (sec || el).hidden = true; return; }
+      if (!DATA.reviews.length) { var sec = el.closest('section'); (sec || el).hidden = true; document.querySelectorAll('a[href="/about#reviews"]').forEach(function (a) { var li = a.closest('li'); if (li) li.hidden = true; }); return; }
       var n = +el.dataset.reviews || DATA.reviews.length;
       el.innerHTML = DATA.reviews.slice(0, n).map(function (r) {
         return '<figure class="review reveal" style="margin:0"><div class="review__stars" aria-label="' + (r.stars || 5) + ' stars">' + '★★★★★'.slice(0, r.stars || 5) + '</div><blockquote>“' + esc(r.quote) + '”</blockquote><footer><b>' + esc(r.name) + '</b>' + esc(r.from) + '</footer></figure>';
@@ -222,7 +222,7 @@
       var a = el.querySelector('[data-site-link]'); a.href = siteHref('email', v); a.textContent = v;
     });
     document.querySelectorAll('[data-site-list]').forEach(function (ul) { if (!ul.children.length) ul.closest('div').remove(); });
-    document.querySelectorAll('[data-tour-count] b').forEach(function (b) { b.textContent = DATA.tours.length; });
+    document.querySelectorAll('[data-tour-count]').forEach(function (el) { el.hidden = !DATA.tours.length; el.querySelector('b').textContent = DATA.tours.length; });
   }
 
   /* ---------------- Group limit (one setting, shown everywhere) ---------------- */
@@ -240,6 +240,24 @@
 
   /* ---------------- Editable content (photos and texts set from the admin, /api/content) ---------------- */
   function slotHtml(v) { return esc(v).replace(/\*(.+?)\*/g, '<span class="outline">$1</span>').replace(/\{max\}/g, CONFIG.maxGuests || 4); }
+  /* Longer text: a blank line starts a new paragraph. */
+  function paragraphsHtml(v) {
+    return String(v).split(/\n{2,}/).map(function (p) { return p.trim(); }).filter(Boolean)
+      .map(function (p) { return '<p>' + slotHtml(p).replace(/\n/g, '<br>') + '</p>'; }).join('');
+  }
+  /* "time | title | text" on each line (two parts: title | text, or time | title when the first looks like a time). */
+  function timelineHtml(v) {
+    return String(v).split(/\n+/).map(function (line) {
+      var p = line.split('|').map(function (x) { return x.trim(); });
+      if (!p[0] && p.length < 2) return '';
+      var time = '', title = '', text = '';
+      if (p.length >= 3) { time = p[0]; title = p[1]; text = p.slice(2).join(' | '); }
+      else if (p.length === 2) { if (/^\d{1,2}[:.]\d{2}$/.test(p[0])) { time = p[0]; title = p[1]; } else { title = p[0]; text = p[1]; } }
+      else title = p[0];
+      if (!title) return '';
+      return '<li><time>' + esc(time) + '</time><div><h3>' + esc(title) + '</h3>' + (text ? '<p>' + esc(text) + '</p>' : '') + '</div></li>';
+    }).join('');
+  }
   function setPhoto(el, im) {
     var old = el.querySelector(':scope > svg'); if (old) old.remove();
     var prev = el.querySelector(':scope > img.slot-photo'); if (prev) prev.remove();
@@ -257,7 +275,15 @@
       var c = all[0];
       if (!c) return;
       var badge = document.querySelector('[data-badge]'); if (badge && (c.texts || {})['home.badge'] === 'off') badge.hidden = true;
-      document.querySelectorAll('[data-slot]').forEach(function (el) { var v = (c.texts || {})[el.dataset.slot]; if (v) el.innerHTML = slotHtml(v); });
+      document.querySelectorAll('[data-slot]').forEach(function (el) {
+        var v = (c.texts || {})[el.dataset.slot]; if (!v) return;
+        el.innerHTML = el.hasAttribute('data-slot-paragraphs') ? paragraphsHtml(v) : el.hasAttribute('data-slot-timeline') ? timelineHtml(v) : slotHtml(v);
+      });
+      var stats = document.querySelector('[data-stats]');
+      if (stats) [1, 2].forEach(function (i) {
+        var v = (c.texts || {})['about.stat' + i + '_value'], l = (c.texts || {})['about.stat' + i + '_label'];
+        if (v && l) stats.insertAdjacentHTML('beforeend', '<div class="stat"><b>' + esc(v) + '</b><span>' + esc(l) + '</span></div>');
+      });
       document.querySelectorAll('[data-slot-img]').forEach(function (el) { var im = (c.images || {})[el.dataset.slotImg]; if (im) setPhoto(el, im); });
     });
   }
