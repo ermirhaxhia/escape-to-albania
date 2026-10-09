@@ -28,11 +28,12 @@
   function loadData() {
     var tours = fetch('/api/tours?lang=en').then(function (r) { return r.ok ? r.json() : { tours: [] }; }).catch(function () { return { tours: [] }; })
       .then(function (j) { return (j.tours || []).map(fromApiTour); });
-    return Promise.all([tours, getJSON('articles'), getJSON('reviews'), getJSON('site')]).then(function (d) {
+    var articles = fetch('/api/articles').then(function (r) { return r.ok ? r.json() : { articles: [] }; }).catch(function () { return { articles: [] }; })
+      .then(function (j) { return j.articles || []; });
+    return Promise.all([tours, articles, getJSON('reviews'), getJSON('site')]).then(function (d) {
       DATA.site = (d[3] && !Array.isArray(d[3])) ? d[3] : {};
       DATA.tours = d[0];
-      DATA.articles = d[1].filter(function (a) { return a.status === 'Published' || (a.status === 'Scheduled' && a.date <= TODAY); })
-        .sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+      DATA.articles = d[1];
       DATA.reviews = d[2];
     });
   }
@@ -292,10 +293,10 @@
   function postCard(a) {
     return '<article class="tour post reveal" data-tags="' + esc(String(a.cat).toLowerCase().replace(/\s+/g, '-')) + '">' +
       '<a class="post__link" href="/blog/' + encodeURIComponent(a.slug) + '" aria-label="' + esc(a.title) + '"></a>' +
-      pic('tour__img', a, '<span class="tour__tag">' + esc(a.cat) + '</span>') +
-      '<div class="tour__body"><div class="tour__meta"><span>' + fmtDate(a.date) + '</span>' + (a.group ? '<span>Group of ' + esc(a.group.size) + '</span>' : '') + '</div>' +
-      '<h3>' + esc(a.title) + '</h3><p>' + esc(a.excerpt || (a.seo && a.seo.desc) || '') + '</p>' +
-      '<div class="tour__foot"><span class="post__by">By ' + esc(a.author) + '</span><span class="link">Read →</span></div></div></article>';
+      pic('tour__img', { cover: a.cover && a.cover.url, coverAlt: a.cover && a.cover.alt, scene: 'road', seed: 4 }, a.cat ? '<span class="tour__tag">' + esc(a.cat) + '</span>' : '') +
+      '<div class="tour__body"><div class="tour__meta"><span>' + fmtDate(a.date) + '</span><span>' + esc(a.minutes) + ' min read</span></div>' +
+      '<h3>' + esc(a.title) + '</h3><p>' + esc(a.excerpt || '') + '</p>' +
+      '<div class="tour__foot">' + (a.author ? '<span class="post__by">By ' + esc(a.author) + '</span>' : '') + '<span class="link">Read →</span></div></div></article>';
   }
   function renderPosts() {
     document.querySelectorAll('[data-posts]').forEach(function (el) {
@@ -318,39 +319,6 @@
     if (!m) { m = document.createElement('meta'); m.setAttribute(attr, name); document.head.appendChild(m); }
     m.setAttribute('content', value);
   }
-  function renderArticle() {
-    var root = document.querySelector('[data-article]'); if (!root) return;
-    var m = location.pathname.match(/^\/blog\/([^/]+)/);
-    var slug = m ? decodeURIComponent(m[1]) : new URLSearchParams(location.search).get('slug');
-    var a = DATA.articles.filter(function (x) { return x.slug === slug; })[0];
-    if (!a) {
-      root.innerHTML = '<section class="page-hero"><div class="page-hero__bg" data-scene="road" data-seed="3"></div><div class="container page-hero__inner"><div class="eyebrow">Journal</div><h1>Story not found.</h1><p class="lead">It may have moved. <a href="/blog">See all stories</a>.</p></div></section>';
-      setMeta('robots', 'noindex');
-      return;
-    }
-    var s = a.seo || {};
-    document.title = s.title || (a.title + ' · Escape to Albania');
-    setMeta('description', s.desc || a.excerpt || '');
-    setMeta('og:title', s.title || a.title, 'property'); setMeta('og:description', s.desc || a.excerpt || '', 'property');
-    if (a.cover) setMeta('og:image', new URL(a.cover, location.origin).href, 'property');
-    if (s.noindex) setMeta('robots', 'noindex');
-    var canon = document.createElement('link'); canon.rel = 'canonical'; canon.href = s.canonical || (location.origin + '/blog/' + a.slug); document.head.appendChild(canon);
-    var t = a.tour && tourBySlug(a.tour);
-    var more = DATA.articles.filter(function (x) { return x !== a; }).slice(0, 3);
-    root.innerHTML =
-      '<section class="page-hero">' +
-      '<div class="container page-hero__inner"><div class="eyebrow">' + esc(a.cat) + '</div><h1>' + esc(a.title) + '</h1>' +
-      '<p class="post__meta">' + fmtDate(a.date) + ' · By ' + esc(a.author) + (a.group ? ' · Group of ' + esc(a.group.size) + (a.group.from ? ' from ' + esc(a.group.from) : '') : '') + '</p></div></section>' +
-      '<section class="section"><div class="container">' + pic('post__cover reveal', a) + '</div><div class="container post-layout">' +
-      '<div class="post__body prose reveal">' + a.body + '</div>' +
-      '<aside class="post__aside reveal">' +
-        (t ? '<div class="post__tour"><div class="eyebrow">The tour</div><h3>' + esc(t.title) + '</h3><p>' + esc(t.short) + '</p><p class="price">From <b>€' + esc(t.price) + '</b> pp</p><a class="btn btn--primary" href="/contact?tour=' + encodeURIComponent(t.slug) + '">Book this day</a> <a class="link" href="/tours/' + encodeURIComponent(t.slug) + '">Details</a></div>' :
-             '<div class="post__tour"><div class="eyebrow">Plan your day</div><h3>Travel with a local.</h3><p>Private days for up to <span data-max-word>four</span> guests, at your pace.</p><a class="btn btn--primary" href="/contact">Book a day</a></div>') +
-        (a.tags ? '<p class="post__tags">' + String(a.tags).split(',').map(function (x) { return '<span>#' + esc(x.trim()) + '</span>'; }).join(' ') + '</p>' : '') +
-      '</aside></div></section>' +
-      (more.length ? '<section class="section section--alt"><div class="container"><div class="section__head reveal"><div><div class="eyebrow">Keep reading</div><h2>More from the journal.</h2></div><a class="btn btn--ghost" href="/blog">All stories →</a></div><div class="tour-grid">' + more.map(postCard).join('') + '</div></div></section>' : '');
-  }
-
   /* ---------------- Contact form → /api/requests (lands in the admin's Requests) ---------------- */
   function initForm() {
     var form = document.querySelector('form[data-booking]'); if (!form) return;
@@ -415,7 +383,7 @@
     mobileCta(); renderLogos(); initNav();
     document.querySelectorAll('[data-year]').forEach(function (e) { e.textContent = new Date().getFullYear(); });
     loadData().then(function () {
-      renderTours(); renderFooterTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderArticle(); renderScenes(); initForm(); initReveal();
+      renderTours(); renderFooterTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderScenes(); initForm(); initReveal();
       applyContent().then(applyMax);
     });
   });
