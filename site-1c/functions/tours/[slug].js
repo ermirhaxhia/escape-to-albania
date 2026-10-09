@@ -129,5 +129,5 @@ ${others.results.length ? `<section class="section section--alt"><div class="con
 
   const shell = await (await asset(env, request, '/tour.html')).text();
   const html = shell.replace('<meta name="robots" content="noindex" data-shell>', '').replace('<!--HEAD-->', () => head).replace('<!--MAIN-->', () => main);
-  return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=20' } });
+  return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' } });
 }

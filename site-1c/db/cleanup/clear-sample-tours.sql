@@ -1,0 +1,12 @@
+UPDATE requests SET tour_id = NULL WHERE tour_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara'));
+UPDATE articles SET tour_id = NULL WHERE tour_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara'));
+UPDATE reviews SET tour_id = NULL WHERE tour_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara'));
+DELETE FROM tour_step_i18n WHERE step_id IN (SELECT id FROM tour_steps WHERE tour_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara')));
+DELETE FROM tour_steps WHERE tour_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara'));
+DELETE FROM tour_included_i18n WHERE included_id IN (SELECT id FROM tour_included WHERE tour_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara')));
+DELETE FROM tour_included WHERE tour_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara'));
+DELETE FROM tour_media WHERE tour_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara'));
+DELETE FROM tour_tags WHERE tour_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara'));
+DELETE FROM tour_i18n WHERE tour_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara'));
+DELETE FROM seo WHERE owner_type = 'tour' AND owner_id IN (SELECT id FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara'));
+DELETE FROM tours WHERE key IN ('theth','koman','shkoder','tirana','berat','gjirokaster','ksamil','llogara');

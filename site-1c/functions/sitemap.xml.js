@@ -16,5 +16,5 @@ export async function onRequestGet({ request, env }) {
   }
   const url = (loc, mod) => `  <url><loc>${esc(origin + loc)}</loc>${mod ? `<lastmod>${esc(mod.slice(0, 10))}</lastmod>` : ''}</url>`;
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...pages.map((p) => url(p)), ...tours.map((t) => url('/tours/' + t.slug, t.updated_at))].join('\n')}\n</urlset>\n`;
-  return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=300' } });
+  return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=60' } });
 }

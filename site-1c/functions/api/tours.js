@@ -2,7 +2,7 @@
 // Public. The published tours straight from the D1 database, in one language, with cover, gallery, itinerary and SEO.
 // A tour is only returned when it is published and has a translation marked ready for that language.
 
-const json = (data, status = 200, cache = 'public, max-age=10') =>
+const json = (data, status = 200, cache = 'no-cache') =>
   new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': cache } });
 
 export async function onRequestGet({ request, env }) {

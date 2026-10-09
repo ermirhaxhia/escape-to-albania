@@ -180,6 +180,16 @@
     });
   }
 
+  /* The footer column "Popular days": the tours chosen for Home first, then the rest, up to four. Hidden when there are no tours. */
+  function renderFooterTours() {
+    var box = document.querySelector('[data-footer-tours]'); if (!box) return;
+    var feat = DATA.tours.filter(function (t) { return t.featured; }), rest = DATA.tours.filter(function (t) { return !t.featured; });
+    var list = feat.concat(rest).slice(0, 4);
+    if (!list.length) { box.hidden = true; return; }
+    box.querySelector('ul').innerHTML = list.map(function (t) { return '<li><a href="/tours/' + encodeURIComponent(t.slug) + '">' + esc(t.title) + '</a></li>'; }).join('');
+    box.hidden = false;
+  }
+
   /* ---------------- Reviews ---------------- */
   function renderReviews() {
     document.querySelectorAll('[data-reviews]').forEach(function (el) {
@@ -379,7 +389,7 @@
     mobileCta(); renderLogos(); initNav();
     document.querySelectorAll('[data-year]').forEach(function (e) { e.textContent = new Date().getFullYear(); });
     loadData().then(function () {
-      renderTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderArticle(); renderScenes(); initForm(); initReveal();
+      renderTours(); renderFooterTours(); renderReviews(); renderSite(); addWhatsAppCta(); renderPosts(); renderArticle(); renderScenes(); initForm(); initReveal();
       applyContent().then(applyMax);
     });
   });
