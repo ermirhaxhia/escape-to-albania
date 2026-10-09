@@ -18,7 +18,7 @@ site-1c/
 │   ├── 404.html
 │   ├── admin/index.html    CMS (admin), noindex
 │   ├── tour.html           Kuadri i faqes së turit (menu, footer); përmbajtjen e mbush functions/tours/[slug].js
-│   ├── data/               Përmbajtja: articles.json, reviews.json, site.json
+│   ├── data/               Përmbajtja: reviews.json, site.json
 │   ├── assets/             base.css, theme.css (1C), site.css, app.js, model.js
 │   ├── _redirects          URL të bukura për /blog/<slug> dhe /tours/<slug>
 │   ├── _headers            Siguria + noindex për /admin
@@ -74,13 +74,11 @@ Provë lokale: `npx wrangler pages dev public --kv REQUESTS --binding ADMIN_TOKE
 
 - Turet, postimet e blogut dhe vlerësimet lexohen nga `public/data/*.json`. Fushat janë të njëjta me
   ato të admin-it (tour: `title, short, region, hours, price, max, published, steps, incl, seo`;
-  artikull: `title, status, date, cat, tags, author, body, seo`), plus disa fusha të faqes:
+  artikull: ruhen në databazë), plus disa fusha të faqes:
   `slug`, `cover` (foto), `scene/seed` (ilustrimi kur s'ka foto), `featured`, `tour` dhe `group` te postimet.
-- Postim i ri për një tur me grup: shto një objekt te `articles.json` me `cat: "Group tours"`,
-  `status: "Published"` dhe, nëse do, `tour: "<slug i turit>"` që të dalë kutia "Book this day".
-  `Scheduled` del vetë kur vjen data.
+- **Artikujt (Journal)** ruhen në databazë (`articles`, `article_i18n`; migrimi `0003_journal.sql`). Çdo artikull ka seksione (mini titull H2/H3, tekst, deri 2 foto) dhe ftesë në fund. Faqja `/blog/<slug>` ndërtohet nga `functions/blog/[slug].js` (tabelë përmbajtjeje, JSON-LD BlogPosting, sitemap). Lista publike: `/api/articles`; admin: `/api/admin/articles`.
 - **Kontaktet** (email, WhatsApp, Instagram) shkruhen te `public/data/site.json`. Sa kohë një fushë është bosh, ajo fshihet nga faqja (footer, Contact, butoni WhatsApp në telefon). Shembull: `{"email": "info@domain.com", "whatsapp": "+355691234567", "instagram": "escapetoalbania"}`.
-- `reviews.json` dhe `articles.json` janë bosh. Seksioni i vlerësimeve fshihet derisa të shtosh të parin.
+- `reviews.json` është bosh. Seksioni i vlerësimeve fshihet derisa të shtosh të parin.
 - Foto: vendosi te `public/media/` dhe shkruaj `"cover": "/media/emri.jpg"`.
 
 **Kujdes:** `admin/index.html` hap aplikacionin e admin-it në ekran të plotë (desktop, ose pamjen mobile në telefon), duke filluar nga Sign in. Kërkesat e rezervimit janë të lidhura me databazën (lista, statusi, shënimet). Pjesët e tjera (artikuj, SEO e përgjithshme, cilësime, Analytics) janë ende dizajn i klikueshëm që nuk ruan, dhe nuk ka më të dhëna shembull (rezervime, artikuj, foto, përdorues, numra analitikë janë bosh). Turet, kërkesat, fotot dhe fushat e faqes ruhen në databazë. Hapi tjetër është ta lidhim admin-in me `/api/requests` (kërkesat vijnë tashmë aty)

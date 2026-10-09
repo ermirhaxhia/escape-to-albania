@@ -1,5 +1,4 @@
-# Pretty URLs for content managed in the admin (tour pages are built by functions/tours/[slug].js)
-/blog/:slug   /article   200
+# Pretty URLs for content managed in the admin (tour and article pages are built by functions/tours/[slug].js and functions/blog/[slug].js)
 
 # Old demo links
 /index.html   /          301

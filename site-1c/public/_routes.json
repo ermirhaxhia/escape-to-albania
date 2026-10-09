@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "include": ["/", "/about", "/tours", "/contact", "/blog", "/tours/*", "/api/*", "/media/*", "/sitemap.xml"],
+  "include": ["/", "/about", "/tours", "/contact", "/blog", "/tours/*", "/blog/*", "/api/*", "/media/*", "/sitemap.xml"],
   "exclude": ["/assets/*", "/admin/*", "/data/*"]
 }
