@@ -81,7 +81,7 @@ h3 { line-height: 1.05; }
 .page-hero--photo h1, .page-hero--photo .lead { text-shadow: 0 2px 14px rgba(16,32,46,.45); }
 .page-hero h1 { font-size: clamp(44px, 7vw, 96px); color: #fff; }
 .page-hero .lead { color: #fff; }
-.page-hero::after { content: "ESCAPE"; position: absolute; right: -10px; bottom: -24px; font-family: var(--font-title); font-size: clamp(100px, 20vw, 260px); line-height: 1; color: transparent; -webkit-text-stroke: 3px rgba(255,255,255,.35); pointer-events: none; }
+.page-hero::after { content: "ESCAPE"; position: absolute; right: -10px; bottom: -24px; font-family: var(--font-title); font-size: clamp(100px, 20vw, 260px); line-height: 1; color: transparent; -webkit-text-stroke: 3px rgba(255,255,255,.18); pointer-events: none; }
 .page-hero__inner { position: relative; z-index: 2; }
 
 @media (max-width: 860px) {
@@ -139,3 +139,10 @@ h3 { line-height: 1.05; }
   .tour-facts li { min-width: 0; flex: 1 1 28%; padding: 10px 12px; }
   .tour-facts b { font-size: 22px; }
 }
+
+/* About: without a photo of the guide the story takes the whole width (no unrelated picture in its place) */
+.split--top .portrait:not(.has-photo) { display: none; }
+.split--top:not(:has(.portrait.has-photo)) { grid-template-columns: minmax(0, 780px); }
+.timeline time:empty { visibility: hidden; }
+.prose p { margin: 0 0 18px; }
+.prose p:last-child { margin-bottom: 0; }

@@ -31,6 +31,7 @@ site-1c/
 ├── functions/api/admin/tours   CRUD i turit për CMS (lista, krijim, ruajtje, çelësat, fshirje)
 ├── functions/_lib/tours.js     Validimi dhe ruajtja e një turi në një transaksion
 ├── functions/api/config.js     Cilësime publike (limiti i grupit) nga D1
+├── functions/_middleware.js    Shkruan SEO title dhe meta description të faqeve kryesore (nga CMS) në HTML, në server
 ├── functions/_lib/http.js      Ndihmëse: JSON, pastrim teksti, mbrojtja me ADMIN_TOKEN
 ├── functions/api/content.js    Foto dhe tekste të faqes që ndryshohen nga admin-i (publike, GET ?lang=en)
 ├── functions/api/admin/content Faqja: GET të gjitha vendet e ndryshueshme, PUT ruan tekst ose foto
@@ -99,3 +100,7 @@ Shpjegimet për përdoruesin janë te `public/admin/udhezues.html` (hapet nga me
 ## Turet
 
 Turi jeton në D1 (tabelat `tours`, `tour_i18n`, `tour_tags`, `tour_steps`, `tour_included`, `tour_media`, `seo`). Admin-i i ruan në një transaksion (`functions/_lib/tours.js`). Kur publikohet, `/tours/<slug>` e shërben nga serveri (`functions/tours/[slug].js`), kështu që Google dhe WhatsApp e shohin përmbajtjen pa JavaScript. `db/seed-tours.json` është vetëm burimi i seed-it fillestar (`tools/make_seed.py`), nuk shërbehet publikisht. Teksti shqip i turit ka tabelat gati por ende nuk ka ekran.
+
+## About dhe SEO e faqeve
+
+Fushat e faqes About janë në `functions/_lib/slots.js` (kopertina, foto e guidës, historia me paragrafë të lirë, statistika shtesë, orari `ora | titulli | teksti`, vlerësimet, thirrja e fundit). Çdo faqe kryesore (Home, Tours, About, Journal, Contact) ka edhe seksionin **SEO** (SEO title dhe Meta description). Ato i shkruan `functions/_middleware.js` në HTML-në që del nga serveri (HTMLRewriter), që Google dhe WhatsApp t'i shohin pa JavaScript. Kur nuk është ndryshuar asgjë te paneli, faqja del e paprekur. `public/_routes.json` e kufizon middleware-in vetëm te këto pesë faqe dhe te API-të, kështu skedarët statikë (CSS, JS, imazhe) nuk e ngarkojnë aspak. Nëse shton një faqe të re kryesore, shtoje te `PAGES` në middleware dhe te `_routes.json`.

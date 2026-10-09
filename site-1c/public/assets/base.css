@@ -129,7 +129,7 @@ h3 { font-size: clamp(20px, 2vw, 26px); }
 .portrait { aspect-ratio: 4/5; }
 .prose p + p { margin-top: 18px; }
 .prose p { font-size: 18px; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 24px; margin-top: 40px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 200px)); gap: 24px; margin-top: 40px; }
 .stat b { display: block; font-family: var(--font-title); font-weight: var(--title-w); font-size: clamp(34px, 4vw, 52px); line-height: 1; color: var(--brand); }
 .stat span { font-size: 14px; color: var(--muted); font-weight: 600; }
 .timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }

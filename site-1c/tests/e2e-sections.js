@@ -12,6 +12,12 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
     p.on('console', (m) => { if (m.type() === 'error' && !/Failed to load|favicon|fonts|ERR_/.test(m.text())) errors.push(m.text().slice(0, 200)); });
   };
 
+  // start from a clean state (an interrupted earlier run may have left edits behind)
+  const resetCtx = await browser.newContext();
+  for (const key of ['home.step2_title', 'home.cta_button']) for (const lang of ['en', 'sq']) await resetCtx.request.put(BASE + '/api/admin/content', { data: { key, lang, value: '' } });
+  await resetCtx.close();
+  await new Promise((r) => setTimeout(r, 6000));
+
   // ---------- public page defaults
   const site = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage(); watch(site);
   await site.goto(BASE + '/'); await site.waitForSelector('.hero__cover'); await site.waitForTimeout(2500);
@@ -61,8 +67,9 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   await sq.click(); await admin.keyboard.press('Control+A'); await admin.keyboard.type('E planifikojmë bashkë');
   await admin.waitForTimeout(1500);
 
-  await admin.getByRole('button', { name: /Thirrja e fundit/ }).click(); await admin.waitForSelector('text=Butoni');
-  const crow = admin.locator('div', { has: admin.locator('span', { hasText: /^Butoni$/ }) }).last();
+  const home = admin.locator('[data-page="Home"]');
+  await home.getByRole('button', { name: /Thirrja e fundit/ }).click(); await home.getByText('Butoni', { exact: true }).waitFor();
+  const crow = home.locator('div', { has: admin.locator('span', { hasText: /^Butoni$/ }) }).last();
   await crow.locator('textarea').first().click(); await admin.keyboard.press('Control+A'); await admin.keyboard.type('Plan my day');
   await admin.waitForSelector('text=U ruajt', { timeout: 5000 }); await admin.waitForTimeout(1500);
 
