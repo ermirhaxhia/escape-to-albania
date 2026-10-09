@@ -1,4 +1,5 @@
-"""Builds db/seed.sql from db/seed-tours.json (English text; Albanian is added later in the admin).
+"""Builds db/seed.sql (regions, pages, settings) and db/demo-tours.sql (the invented sample tours, local tests only)
+from db/seed-tours.json (English text; Albanian is added later in the admin).
 
   python tools/make_seed.py            # writes db/seed.sql
 Run it once on an empty database, after the migrations:
@@ -27,7 +28,12 @@ for k, v in [('default_max_guests', '4'), ('contact_email', ''), ('contact_whats
              ('seo_title_pattern', '%title% | Escape to Albania'), ('ga4_property_id', ''), ('search_console_domain', '')]:
     out.append(f"INSERT INTO settings (key, value) VALUES ({q(k)}, {q(v)});")
 
-out += ['', '-- Tours']
+
+open(os.path.join(ROOT, 'db/seed.sql'), 'w', encoding='utf-8', newline='\n').write('\n'.join(out) + '\n')
+print('wrote db/seed.sql (tags, pages, settings: no tours)')
+
+# The invented sample tours live in their own file, only for local tests and demos. Never run it on the real database.
+out = ['-- Sample tours for LOCAL TESTS ONLY (invented content). Load after db/seed.sql. Do not run this on the real database.', 'PRAGMA foreign_keys = ON;', '']
 step_id = incl_id = 0
 for ti, t in enumerate(tours, 1):
     out += [f"INSERT INTO tours (id, key, hours, price_from, max_guests, published, featured, sort_order, scene, seed) VALUES "
@@ -49,5 +55,6 @@ for ti, t in enumerate(tours, 1):
                f"('tour', {ti}, 'en', {q(seo.get('title', ''))}, {q(seo.get('desc', ''))}, {q(seo.get('keyword', ''))}, {1 if seo.get('noindex') else 0});")
     out.append('')
 
-open(os.path.join(ROOT, 'db/seed.sql'), 'w', encoding='utf-8', newline='\n').write('\n'.join(out) + '\n')
-print('wrote db/seed.sql:', len(tours), 'tours')
+
+open(os.path.join(ROOT, 'db/demo-tours.sql'), 'w', encoding='utf-8', newline='\n').write('\n'.join(out) + '\n')
+print('wrote db/demo-tours.sql:', len(tours), 'sample tours')

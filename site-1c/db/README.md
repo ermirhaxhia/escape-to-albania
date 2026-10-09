@@ -40,3 +40,9 @@ Paste only the pieces of the migration you have not run yet, in order, one at a 
 Rules: texts live in `*_i18n`, one row per language, shown only when `ready = 1`. Slugs are unique per language.
 HTML (`body_html`, `answer_html`) must be sanitized by the API before saving. Group size: `settings.default_max_guests` (now 4) is the limit; a tour can override it with `tours.max_guests`. The database has no fixed maximum.
 Not in v1: `customers`, `blocked_dates` (calendar), payments beyond a deposit.
+
+## Tours: no sample data in the real database
+
+`seed.sql` now holds only the regions, pages and settings. The invented sample tours are in `demo-tours.sql`, for **local tests only** (`npx wrangler d1 execute escape-to-albania --local --file db/demo-tours.sql`). Do not run it on the real database.
+
+`cleanup/clear-sample-tours.sql` removes the 8 sample tours (keys `theth`, `koman`, `shkoder`, `tirana`, `berat`, `gjirokaster`, `ksamil`, `llogara`) and everything that hangs on them, and leaves any other tour untouched. Booking requests are kept (they only lose the link to the tour, not its name). It has no comments, so it can be pasted straight into the Cloudflare D1 console.

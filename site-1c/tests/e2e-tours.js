@@ -35,6 +35,13 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   const before = await admin.locator('text=/from €\\d+/').count();
   log(before >= 8, 'the Tours list shows the tours that are in the database (' + before + ')');
 
+  // the footer links go to real tour pages (no dead links)
+  const fsite = await ctx.newPage(); await fsite.goto(BASE + '/about'); await fsite.waitForTimeout(1500);
+  const footLinks = await fsite.locator('[data-footer-tours] a').evaluateAll((a) => a.map((x) => x.getAttribute('href')));
+  const footOk = await Promise.all(footLinks.map((h) => ctx.request.get(BASE + h).then((r) => r.status())));
+  log(footLinks.length >= 1 && footOk.every((c) => c === 200), 'the footer links to real tour pages: ' + footLinks.join(', '));
+  await fsite.close();
+
   // ---------- a photo for the cover and the gallery
   await admin.click('text=Media >> nth=0');
   const [chooser] = await Promise.all([admin.waitForEvent('filechooser'), admin.getByRole('button', { name: 'Upload', exact: true }).first().click()]);
@@ -132,6 +139,10 @@ const log = (ok, msg) => console.log((ok ? 'PASS ' : 'FAIL ') + msg);
   // ---------- the old fake data is not served any more
   log((await html('/data/tours.json')).status === 404 || !(await html('/data/tours.json')).body.includes('Theth'), 'the old tours.json file is no longer public');
   log((await html('/tours/does-not-exist')).status === 404, 'an unknown tour address answers 404');
+
+  // leave the library as we found it
+  const lib = await (await ctx.request.get(BASE + '/api/admin/media')).json();
+  for (const m of lib.media) await ctx.request.delete(BASE + '/api/admin/media/' + m.id);
 
   log(errors.length === 0, 'no console errors' + (errors.length ? ': ' + errors.slice(0, 3).join(' | ') : ''));
   await browser.close();

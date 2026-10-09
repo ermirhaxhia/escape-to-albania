@@ -139,7 +139,8 @@
       <li>Te <b>Turet</b> shtyp <b>+ Tur i ri</b>.</li>
       <li>Plotëso <b>Titulli</b> dhe <b>Çmimi</b> (të vetmet të detyrueshme). Rekomandohet edhe përshkrimi i shkurtër, kohëzgjatja, rajoni, itinerari dhe "Përfshirë".</li>
       <li>Zgjidh foton te <b>Fotot</b>: <b>Replace</b> për kopertinën dhe <b>+ Add</b> për galerinë. Fotot vijnë nga <b>Media</b>, ngarkoji aty para se të nisësh.</li>
-      <li>Vendose <b>Statusin</b> në <b>Publikuar</b> dhe shtyp <b>Ruaj</b>. Linku <b>Shiko faqen e turit</b> shfaqet menjëherë dhe faqja është live brenda sekondash.</li>
+      <li>Statusi është <b>Publikuar</b> si parazgjedhje. Shtyp <b>Ruaj</b>. Turi del <b>menjëherë</b> te faqja Tours, te footer dhe ka faqen e vet. Në kutinë Statusi shfaqen lidhjet <b>Shiko faqen e turit</b> dhe <b>Shiko te faqja Tours</b>.</li>
+      <li>Nëse nuk do që të dalë ende, ndërroje në <b>Draft</b> para se ta ruash.</li>
     </ol>
     <h3>Çfarë kontrollon secila fushë</h3>
     <table>
@@ -152,12 +153,13 @@
       <tr><th>URL slug</th><td>Adresa e faqes. Mos e ndrysho pasi turi të jetë publikuar dhe ndarë, sepse linku i vjetër pushon së punuari.</td></tr>
       <tr><th>Canonical URL</th><td>Zakonisht lëre bosh.</td></tr>
       <tr><th>Hide from search engines</th><td>Faqja ekziston, por Google nuk e tregon dhe nuk del te sitemap.</td></tr>
-      <tr><th>Shfaqet te Home</th><td>Po = turi del te seksioni "Popular days" në faqen kryesore (deri në 3). Nëse asnjë nuk është i zgjedhur, dalin të parët.</td></tr>
+      <tr><th>Shfaqet te Home</th><td>Po = turi del te seksioni "Popular days" në faqen kryesore (deri në 3) dhe te footer (deri në 4). Nëse asnjë nuk është i zgjedhur, dalin të parët. Pa asnjë tur, seksioni dhe kolona e footer-it fshihen vetë.</td></tr>
     </table>
     <h3>Publikim, fshehje dhe fshirje</h3>
     <ul>
       <li><b>Draft</b> (ose çelësi te lista) e fsheh turin. Faqja e tij përgjigjet "404" dhe largohet nga sitemap.</li>
       <li><b>Fshi</b> e heq përgjithmonë dhe faqja pushon. Kërkesat e rezervimit mbajnë emrin e turit.</li>
+      <li>Turet shembull nga fillimi fshihen të gjithë me një skedar të vetëm (shih <code>db/cleanup</code> në projekt), ose një nga një me <b>Fshi</b>.</li>
     </ul>
     <div class="note">Sitemap-i (<code>/sitemap.xml</code>) përditësohet vetë: çdo tur i publikuar hyn aty, ai i fshehur del.</div>
     <div class="warn">Turet janë ende vetëm në anglisht. Versioni shqip i faqeve të turit do të vijë me ndërruesin e gjuhës.</div>
