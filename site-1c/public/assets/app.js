@@ -1,6 +1,5 @@
 /* Escape to Albania — site behaviour (design 1c · Plot & Kontur).
-   Content comes from /data/*.json, the same shape the admin (CMS) edits:
-   tours.json, articles.json, reviews.json. window.MODEL (assets/model.js) holds the logo settings. */
+   Tours, journal articles, texts, photos and contact details come from the CMS (/api/*). window.MODEL (assets/model.js) holds the logo settings. */
 (function () {
   'use strict';
   document.documentElement.classList.add('js');
@@ -9,9 +8,6 @@
   var TODAY = new Date().toISOString().slice(0, 10);
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  function getJSON(name) {
-    return fetch('/data/' + name + '.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
-  }
   /* A tour from /api/tours, in the shape the cards use. */
   function fromApiTour(t) {
     return {
@@ -25,12 +21,28 @@
     var k = (tags || []).map(function (g) { return g.key; });
     return k.indexOf('north') > -1 ? 'mountain' : k.indexOf('coast') > -1 ? 'coast' : k.indexOf('city') > -1 ? 'city' : k.indexOf('culture') > -1 ? 'castle' : 'coast';
   }
+  /* The texts the guide edited (same request as applyContent; asked once). */
+  var contentP = null;
+  function getContent() {
+    var lang = document.documentElement.lang || 'en';
+    return contentP || (contentP = fetch('/api/content?lang=' + encodeURIComponent(lang)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }));
+  }
+  /* "quote | name | from | stars" on each line (stars 1-5, optional). */
+  function parseReviews(c) {
+    var v = c && c.texts && c.texts['reviews.list']; if (!v) return [];
+    return String(v).split(/\n+/).map(function (line) {
+      var p = line.split('|').map(function (x) { return x.trim(); });
+      var stars = 5; if (p.length > 2 && /^[1-5]$/.test(p[p.length - 1])) stars = +p.pop();
+      var from = p.length >= 3 ? p.pop() : '', name = p.length >= 2 ? p.pop() : '';
+      return { quote: p.join(' | '), name: name, from: from, stars: stars };
+    }).filter(function (r) { return r.quote && r.name; });
+  }
   function loadData() {
     var tours = fetch('/api/tours?lang=en').then(function (r) { return r.ok ? r.json() : { tours: [] }; }).catch(function () { return { tours: [] }; })
       .then(function (j) { return (j.tours || []).map(fromApiTour); });
     var articles = fetch('/api/articles').then(function (r) { return r.ok ? r.json() : { articles: [] }; }).catch(function () { return { articles: [] }; })
       .then(function (j) { return j.articles || []; });
-    return Promise.all([tours, articles, getJSON('reviews'), getConfig()]).then(function (d) {
+    return Promise.all([tours, articles, getContent().then(parseReviews), getConfig()]).then(function (d) {
       DATA.site = (d[3] && d[3].site) || {};
       DATA.tours = d[0];
       DATA.articles = d[1];
@@ -279,7 +291,7 @@
   }
   function applyContent() {
     var lang = document.documentElement.lang || 'en';
-    var content = fetch('/api/content?lang=' + encodeURIComponent(lang)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    var content = getContent();
     return Promise.all([content, getConfig()]).then(function (all) {
       var c = all[0];
       if (!c) return;

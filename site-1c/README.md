@@ -18,7 +18,6 @@ site-1c/
 │   ├── 404.html
 │   ├── admin/index.html    CMS (admin), noindex
 │   ├── tour.html           Kuadri i faqes së turit (menu, footer); përmbajtjen e mbush functions/tours/[slug].js
-│   ├── data/               Përmbajtja: reviews.json
 │   ├── assets/             base.css, theme.css (1C), site.css, app.js, model.js
 │   ├── _redirects          URL të bukura për /blog/<slug> dhe /tours/<slug>
 │   ├── _headers            Siguria + noindex për /admin
@@ -78,7 +77,7 @@ Provë lokale: `npx wrangler pages dev public --kv REQUESTS --binding ADMIN_TOKE
   `slug`, `cover` (foto), `scene/seed` (ilustrimi kur s'ka foto), `featured`, `tour` dhe `group` te postimet.
 - **Artikujt (Journal)** ruhen në databazë (`articles`, `article_i18n`; migrimi `0003_journal.sql`). Çdo artikull ka seksione (mini titull H2/H3, tekst, deri 2 foto) dhe ftesë në fund. Faqja `/blog/<slug>` ndërtohet nga `functions/blog/[slug].js` (tabelë përmbajtjeje, JSON-LD BlogPosting, sitemap). Lista publike: `/api/articles`; admin: `/api/admin/articles`.
 - **Kontaktet** (email, WhatsApp, Instagram) ruhen te tabela `settings` (`contact_email`, `contact_whatsapp`, `contact_instagram`) dhe ndryshohen nga CMS te Faqja > Contact. Faqja i merr nga `/api/config`. Sa kohë një fushë është bosh, ajo fshihet nga faqja (footer, Contact, butoni WhatsApp në telefon). Pyetjet e shpeshta janë slot-i `contact.faq` (`pyetja | përgjigja` në çdo rresht).
-- `reviews.json` është bosh. Seksioni i vlerësimeve fshihet derisa të shtosh të parin.
+- Vlerësimet ruhen si tekst te CMS (slot-i `reviews.list`, një rresht: `citati | emri | nga | yje`) dhe dalin te Home dhe About. Seksioni i vlerësimeve fshihet derisa të shtosh të parin.
 - Foto: vendosi te `public/media/` dhe shkruaj `"cover": "/media/emri.jpg"`.
 
 **Kujdes:** `admin/index.html` hap aplikacionin e admin-it në ekran të plotë (desktop, ose pamjen mobile në telefon), duke filluar nga Sign in. Kërkesat e rezervimit janë të lidhura me databazën (lista, statusi, shënimet). Pjesët e tjera (artikuj, SEO e përgjithshme, cilësime, Analytics) janë ende dizajn i klikueshëm që nuk ruan, dhe nuk ka më të dhëna shembull (rezervime, artikuj, foto, përdorues, numra analitikë janë bosh). Turet, kërkesat, fotot dhe fushat e faqes ruhen në databazë. Hapi tjetër është ta lidhim admin-in me `/api/requests` (kërkesat vijnë tashmë aty)

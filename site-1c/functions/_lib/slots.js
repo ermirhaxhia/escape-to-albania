@@ -41,6 +41,8 @@ export const SLOTS = [
   { key: 'home.why4_title', type: 'text', page: 'Home', section: 'Pse një vendas', label: 'Karta 4: titulli', fallback: 'Clear prices' },
   { key: 'home.why4_text', type: 'text', page: 'Home', section: 'Pse një vendas', label: 'Karta 4: teksti', fallback: 'One price per person, with transport, entrance fees and lunch listed up front.' },
 
+  { key: 'home.reviews_title', type: 'text', page: 'Home', section: 'Vlerësimet', label: 'Titulli i seksionit (H2)', fallback: 'What guests say.' },
+
   { key: 'home.journal_title', type: 'text', page: 'Home', section: 'Journal', label: 'Titulli i seksionit (H2)', fallback: 'Stories and tips from Albania.' },
 
   { key: 'home.cta_title', type: 'text', page: 'Home', section: 'Thirrja e fundit', label: 'Titulli (H2)', fallback: 'Ready for your day in Albania?' },
@@ -51,6 +53,13 @@ export const SLOTS = [
   ...cover('Tours', 'tours'),
   { key: 'tours.title', type: 'text', page: 'Tours', section: 'Kopertina', label: 'Titulli (H1)', fallback: 'Our days, one local guide.' },
   { key: 'tours.lead', type: 'text', page: 'Tours', section: 'Kopertina', label: 'Nën-titulli (paragraf)', fallback: 'Every day is private for up to {max} guests. Don’t see what you want? I’ll build a custom day around your trip.' },
+
+  { key: 'tours.custom_title', type: 'text', page: 'Tours', section: 'Ditë me porosi', label: 'Titulli (H2)', fallback: 'Your own route.' },
+  { key: 'tours.custom_text', type: 'text', page: 'Tours', section: 'Ditë me porosi', label: 'Teksti', fallback: 'Combine two regions, add a hike, skip the museums. Tell me what a perfect day looks like and I’ll price it honestly.', rows: 3 },
+  { key: 'tours.custom_button', type: 'text', page: 'Tours', section: 'Ditë me porosi', label: 'Butoni', fallback: 'Plan a custom day' },
+  { key: 'tours.cta_title', type: 'text', page: 'Tours', section: 'Thirrja e fundit', label: 'Titulli (H2)', fallback: 'Ready for your day in Albania?' },
+  { key: 'tours.cta_text', type: 'text', page: 'Tours', section: 'Thirrja e fundit', label: 'Teksti', fallback: 'Tell me your dates and what you love. I’ll reply within a day with a plan that fits.' },
+  { key: 'tours.cta_button', type: 'text', page: 'Tours', section: 'Thirrja e fundit', label: 'Butoni', fallback: 'Book a day' },
 
   // ---- About
   { key: "about.cover", type: "image", page: "About", section: "Kopertina", label: "Foto kopertinë" },
@@ -67,6 +76,7 @@ export const SLOTS = [
   { key: "about.day_lead", type: "text", page: "About", section: "Një ditë me mua", label: "Teksti nën titull", fallback: "Every route is different, but the rhythm stays the same." },
   { key: "about.timeline", type: "text", page: "About", section: "Një ditë me mua", label: "Orari (një rresht për çdo moment: ora | titulli | teksti)", fallback: "08:00 | Pickup at your door | Coffee in hand, plan in my head. I’ll check how you slept and what you feel like doing.\n10:30 | The first big stop | The castle, the canyon or the old town, before the tour buses arrive.\n13:30 | A long, slow lunch | Always at a family place and always more food than you planned for.\n16:00 | Swim, walk or wander | The part of the day that depends on you: the river, the beach or the back streets.\n19:00 | Back to your hotel | Tired in a good way, with a phone full of photos and a list for next time.", rows: 8 },
   { key: "about.reviews_title", type: "text", page: "About", section: "Vlerësimet", label: "Titulli i seksionit (H2)", fallback: "Kind words from the road." },
+  { key: "reviews.list", type: "text", page: "About", section: "Vlerësimet", label: "Vlerësimet (një rresht për çdo vlerësim: citati | emri | nga | yje)", maxLen: 4000, rows: 8, fallback: "" },
   { key: "about.cta_title", type: "text", page: "About", section: "Thirrja e fundit", label: "Titulli (H2)", fallback: "Ready for your day in Albania?" },
   { key: "about.cta_text", type: "text", page: "About", section: "Thirrja e fundit", label: "Teksti", fallback: "Tell me your dates and what you love. I’ll reply within a day with a plan that fits." },
   { key: "about.cta_button", type: "text", page: "About", section: "Thirrja e fundit", label: "Butoni", fallback: "Book a day" },
@@ -75,6 +85,10 @@ export const SLOTS = [
   ...cover('Journal', 'journal'),
   { key: 'journal.title', type: 'text', page: 'Journal', section: 'Kopertina', label: 'Titulli (H1)', fallback: 'Stories from the road.' },
   { key: 'journal.lead', type: 'text', page: 'Journal', section: 'Kopertina', label: 'Nën-titulli (paragraf)', fallback: 'Days we spent with our groups, routes worth stealing and honest tips from a local guide.' },
+
+  { key: 'journal.cta_title', type: 'text', page: 'Journal', section: 'Thirrja e fundit', label: 'Titulli (H2)', fallback: 'Want to be in the next story?' },
+  { key: 'journal.cta_text', type: 'text', page: 'Journal', section: 'Thirrja e fundit', label: 'Teksti', fallback: 'Tell me your dates and what you love. I’ll reply within a day with a plan that fits.' },
+  { key: 'journal.cta_button', type: 'text', page: 'Journal', section: 'Thirrja e fundit', label: 'Butoni', fallback: 'Book a day' },
 
   // ---- Contact
   ...cover('Contact', 'contact'),
@@ -103,7 +117,9 @@ export const SLOTS = [
   { key: 'contact.seo_description', type: 'text', page: 'Contact', section: 'SEO', label: 'Meta description', fallback: "Tell us your dates and what you love and get a plan with a fixed price within a day. Private day trips in Albania for small groups with a local guide.", rows: 3, range: [140, 160] },
 
   // ---- General
-  { key: 'general.max_guests', type: 'setting', setting: 'default_max_guests', page: 'Të përgjithshme', section: 'Të përgjithshme', label: 'Maks. mysafirë për grup', min: 1, max: 50 }
+  { key: 'general.max_guests', type: 'setting', setting: 'default_max_guests', page: 'Të përgjithshme', section: 'Të përgjithshme', label: 'Maks. mysafirë për grup', min: 1, max: 50 },
+  { key: 'footer.tagline', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Teksti nën logo (në çdo faqe)', fallback: 'Small-group days with a local guide. Private, unhurried, and a little bit personal.', rows: 3 },
+  { key: 'footer.location', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Vendndodhja poshtë', fallback: 'Tirana, Albania' }
 ];
 
 export const SLOT_BY_KEY = Object.fromEntries(SLOTS.map((s) => [s.key, s]));
