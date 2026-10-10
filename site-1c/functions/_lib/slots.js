@@ -80,6 +80,15 @@ export const SLOTS = [
   ...cover('Contact', 'contact'),
   { key: 'contact.title', type: 'text', page: 'Contact', section: 'Kopertina', label: 'Titulli (H1)', fallback: 'Book a day.' },
   { key: 'contact.lead', type: 'text', page: 'Contact', section: 'Kopertina', label: 'Nën-titulli (paragraf)', fallback: 'Tell me when you’re in Albania and what you’d love to see. I reply within 24 hours, usually faster.' },
+  { key: 'contact.email', type: 'setting', text: true, setting: 'contact_email', page: 'Contact', section: 'Të dhënat e kontaktit', label: 'Email' },
+  { key: 'contact.whatsapp', type: 'setting', text: true, setting: 'contact_whatsapp', page: 'Contact', section: 'Të dhënat e kontaktit', label: 'WhatsApp' },
+  { key: 'contact.instagram', type: 'setting', text: true, setting: 'contact_instagram', page: 'Contact', section: 'Të dhënat e kontaktit', label: 'Instagram' },
+  { key: 'contact.based', type: 'text', page: 'Contact', section: 'Të dhënat e kontaktit', label: 'Ku ndodhem (teksti te kartela)', fallback: 'Tirana, Albania. Pickups in Tirana, Durrës, Shkodër, Vlorë & Sarandë.', rows: 3 },
+  { key: 'contact.form_button', type: 'text', page: 'Contact', section: 'Forma', label: 'Butoni i dërgimit', fallback: 'Send request' },
+  { key: 'contact.form_note', type: 'text', page: 'Contact', section: 'Forma', label: 'Teksti nën buton', fallback: 'No payment now. I’ll reply with a plan and a fixed price.' },
+  { key: 'contact.thanks_text', type: 'text', page: 'Contact', section: 'Forma', label: 'Mesazhi pas dërgimit', fallback: 'You’ll hear back within 24 hours, usually faster.' },
+  { key: 'contact.faq_title', type: 'text', page: 'Contact', section: 'Pyetjet', label: 'Titulli i seksionit (H2)', fallback: 'Questions, answered.' },
+  { key: 'contact.faq', type: 'text', page: 'Contact', section: 'Pyetjet', label: 'Pyetjet (një rresht për çdo pyetje: pyetja | përgjigja)', maxLen: 4000, rows: 12, fallback: "How many people can join? | One to {max} guests. That’s the whole idea: a private day, never a crowd.\nWhat is included in the price? | Private transport, fuel, your guide and the entrance fees named on each tour. Lunch is included on most days and clearly marked.\nCan we change the route? | Yes. Each day is a starting point. Tell me what to add or skip and I’ll adjust the plan and price.\nWhat if the weather is bad? | I watch the forecast for you. If the plan doesn’t work, we switch days or choose a better route at no extra cost.\nHow do I pay? | A small deposit holds the date, and the balance is paid on the day by cash or card." },
 
   // ---- SEO of the pages: the title and the description Google shows (written into the page by the server)
   { key: 'home.seo_title', type: 'text', page: 'Home', section: 'SEO', label: 'SEO title', fallback: "Escape to Albania | Private Day Trips with a Local Guide", range: [50, 60] },
