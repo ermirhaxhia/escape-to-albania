@@ -279,6 +279,26 @@
       return '<details><summary>' + slotHtml(q) + '</summary><p>' + slotHtml(a) + '</p></details>';
     }).join('').replace('<details>', '<details open>');
   }
+  /* Footer links: "text | address" on each line. Only /pages, #anchors, https:// and mailto: are accepted. */
+  function linksHtml(v, hasReviews) {
+    return String(v).split(/\n+/).map(function (line) {
+      var i = line.lastIndexOf('|'); if (i < 0) return '';
+      var t = line.slice(0, i).trim(), u = line.slice(i + 1).trim();
+      if (!t || !/^(\/|#|https?:\/\/|mailto:)/i.test(u)) return '';
+      if (u === '/about#reviews' && !hasReviews) return '';
+      return '<li><a href="' + esc(u) + '">' + esc(t) + '</a></li>';
+    }).join('');
+  }
+  function applyFooter(texts) {
+    var hasReviews = parseReviews({ texts: texts }).length > 0;
+    document.querySelectorAll('[data-slot-links]').forEach(function (ul) {
+      var v = texts[ul.dataset.slotLinks]; if (v) ul.innerHTML = linksHtml(v, hasReviews);
+    });
+    var extra = linksHtml(texts['footer.extra_links'] || '', true), col = document.querySelector('[data-footer-explore]');
+    if (extra && col && !document.querySelector('[data-footer-extra]')) {
+      col.insertAdjacentHTML('afterend', '<div data-footer-extra>' + (texts['footer.extra_title'] ? '<h4>' + esc(texts['footer.extra_title']) + '</h4>' : '') + '<ul>' + extra + '</ul></div>');
+    }
+  }
   function setPhoto(el, im) {
     var old = el.querySelector(':scope > svg'); if (old) old.remove();
     var prev = el.querySelector(':scope > img.slot-photo'); if (prev) prev.remove();
@@ -300,6 +320,7 @@
         var v = (c.texts || {})[el.dataset.slot]; if (!v) return;
         el.innerHTML = el.hasAttribute('data-slot-faq') ? (faqHtml(v) || el.innerHTML) : el.hasAttribute('data-slot-paragraphs') ? paragraphsHtml(v) : el.hasAttribute('data-slot-timeline') ? timelineHtml(v) : slotHtml(v);
       });
+      applyFooter(c.texts || {});
       var stats = document.querySelector('[data-stats]');
       if (stats) [1, 2].forEach(function (i) {
         var v = (c.texts || {})['about.stat' + i + '_value'], l = (c.texts || {})['about.stat' + i + '_label'];

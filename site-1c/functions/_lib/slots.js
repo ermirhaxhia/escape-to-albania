@@ -118,8 +118,15 @@ export const SLOTS = [
 
   // ---- General
   { key: 'general.max_guests', type: 'setting', setting: 'default_max_guests', page: 'Të përgjithshme', section: 'Të përgjithshme', label: 'Maks. mysafirë për grup', min: 1, max: 50 },
-  { key: 'footer.tagline', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Teksti nën logo (në çdo faqe)', fallback: 'Small-group days with a local guide. Private, unhurried, and a little bit personal.', rows: 3 },
-  { key: 'footer.location', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Vendndodhja poshtë', fallback: 'Tirana, Albania' }
+  { key: 'footer.tagline', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Teksti nën logo', fallback: 'Small-group days with a local guide. Private, unhurried, and a little bit personal.', rows: 3 },
+  { key: 'footer.explore_title', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Kolona 1: titulli', fallback: 'Explore' },
+  { key: 'footer.explore_links', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Kolona 1: lidhjet (një rresht për çdo lidhje: teksti | adresa)', rows: 7, maxLen: 1500, fallback: "Home | /\nTours | /tours\nAbout me | /about\nReviews | /about#reviews\nJournal | /blog\nContact | /contact" },
+  { key: 'footer.tours_title', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Kolona 2: titulli (turet dalin vetë)', fallback: 'Popular days' },
+  { key: 'footer.extra_title', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Kolona shtesë: titulli', fallback: '' },
+  { key: 'footer.extra_links', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Kolona shtesë: lidhjet (teksti | adresa)', rows: 5, maxLen: 1500, fallback: '' },
+  { key: 'footer.hello_title', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Kolona e kontaktit: titulli', fallback: 'Say hello' },
+  { key: 'footer.copyright', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Rreshti i të drejtave (viti vendoset vetë)', fallback: 'Escape to Albania. All rights reserved.' },
+  { key: 'footer.location', type: 'text', page: 'Të përgjithshme', section: 'Footer', label: 'Vendndodhja poshtë djathtas', fallback: 'Tirana, Albania' }
 ];
 
 export const SLOT_BY_KEY = Object.fromEntries(SLOTS.map((s) => [s.key, s]));
