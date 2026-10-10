@@ -30,8 +30,8 @@
       .then(function (j) { return (j.tours || []).map(fromApiTour); });
     var articles = fetch('/api/articles').then(function (r) { return r.ok ? r.json() : { articles: [] }; }).catch(function () { return { articles: [] }; })
       .then(function (j) { return j.articles || []; });
-    return Promise.all([tours, articles, getJSON('reviews'), getJSON('site')]).then(function (d) {
-      DATA.site = (d[3] && !Array.isArray(d[3])) ? d[3] : {};
+    return Promise.all([tours, articles, getJSON('reviews'), getConfig()]).then(function (d) {
+      DATA.site = (d[3] && d[3].site) || {};
       DATA.tours = d[0];
       DATA.articles = d[1];
       DATA.reviews = d[2];
@@ -202,7 +202,7 @@
     });
   }
 
-  /* ---------------- Contact details (from /data/site.json; hidden while empty) ---------------- */
+  /* ---------------- Contact details (from the CMS via /api/config; hidden while empty) ---------------- */
   function siteHref(k, v) {
     if (k === 'email') return 'mailto:' + v;
     if (k === 'whatsapp') return 'https://wa.me/' + v.replace(/[^\d]/g, '');
@@ -259,6 +259,14 @@
       return '<li><time>' + esc(time) + '</time><div><h3>' + esc(title) + '</h3>' + (text ? '<p>' + esc(text) + '</p>' : '') + '</div></li>';
     }).join('');
   }
+  /* "question | answer" on each line; the first one starts open. */
+  function faqHtml(v) {
+    return String(v).split(/\n+/).map(function (line) {
+      var i = line.indexOf('|'); if (i < 0) return '';
+      var q = line.slice(0, i).trim(), a = line.slice(i + 1).trim(); if (!q || !a) return '';
+      return '<details><summary>' + slotHtml(q) + '</summary><p>' + slotHtml(a) + '</p></details>';
+    }).join('').replace('<details>', '<details open>');
+  }
   function setPhoto(el, im) {
     var old = el.querySelector(':scope > svg'); if (old) old.remove();
     var prev = el.querySelector(':scope > img.slot-photo'); if (prev) prev.remove();
@@ -278,7 +286,7 @@
       var badge = document.querySelector('[data-badge]'); if (badge && (c.texts || {})['home.badge'] === 'off') badge.hidden = true;
       document.querySelectorAll('[data-slot]').forEach(function (el) {
         var v = (c.texts || {})[el.dataset.slot]; if (!v) return;
-        el.innerHTML = el.hasAttribute('data-slot-paragraphs') ? paragraphsHtml(v) : el.hasAttribute('data-slot-timeline') ? timelineHtml(v) : slotHtml(v);
+        el.innerHTML = el.hasAttribute('data-slot-faq') ? (faqHtml(v) || el.innerHTML) : el.hasAttribute('data-slot-paragraphs') ? paragraphsHtml(v) : el.hasAttribute('data-slot-timeline') ? timelineHtml(v) : slotHtml(v);
       });
       var stats = document.querySelector('[data-stats]');
       if (stats) [1, 2].forEach(function (i) {

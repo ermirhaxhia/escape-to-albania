@@ -26,7 +26,7 @@ export async function onRequestGet({ request, env }) {
     slots: SLOTS.map((s) => s.type === 'toggle'
       ? { key: s.key, type: 'toggle', page: s.page, section: s.section || '', label: s.label, on: ((t[s.key] || {}).en || 'on') !== 'off' }
       : s.type === 'setting'
-      ? { key: s.key, type: 'setting', page: s.page, section: s.section || '', label: s.label, min: s.min, max: s.max, value: st[s.setting] || '4' }
+      ? { key: s.key, type: 'setting', page: s.page, section: s.section || '', label: s.label, ...(s.text ? { text: true, value: st[s.setting] || '' } : { min: s.min, max: s.max, value: st[s.setting] || '4' }) }
       : s.type === 'image'
       ? { key: s.key, type: 'image', page: s.page, section: s.section || '', label: s.label, mediaId: im[s.key] && im[s.key].media_id ? String(im[s.key].media_id) : null, url: im[s.key] && im[s.key].r2_key ? '/media/' + im[s.key].r2_key : null }
       : { key: s.key, type: 'text', page: s.page, section: s.section || '', label: s.label, fallback: s.fallback || '', rows: s.rows || 2, range: s.range || null, en: (t[s.key] || {}).en || '', sq: (t[s.key] || {}).sq || '' })
@@ -49,6 +49,18 @@ export async function onRequestPut({ request, env }) {
        ON CONFLICT (key, lang) DO UPDATE SET value = excluded.value, updated_at = strftime('%Y-%m-%dT%H:%M:%SZ','now')`
     ).bind(slot.key, body.on ? 'on' : 'off').run();
     return json({ ok: true });
+  }
+
+  if (slot.type === 'setting' && slot.text) {
+    let v = clean(body.value, 120);
+    if (slot.setting === 'contact_email' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return json({ error: 'Email-i nuk duket i saktë' }, 400);
+    if (slot.setting === 'contact_whatsapp' && v && !/^\+?[\d\s().-]{6,}$/.test(v)) return json({ error: 'Shkruaje numrin me kodin e shtetit, p.sh. +355691234567' }, 400);
+    if (slot.setting === 'contact_instagram') v = v.replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/^@/, '').replace(/\/.*$/, '');
+    await env.DB.prepare(
+      `INSERT INTO settings (key, value) VALUES (?1, ?2)
+       ON CONFLICT (key) DO UPDATE SET value = excluded.value, updated_at = strftime('%Y-%m-%dT%H:%M:%SZ','now')`
+    ).bind(slot.setting, v).run();
+    return json({ ok: true, value: v });
   }
 
   if (slot.type === 'setting') {
@@ -79,6 +91,6 @@ export async function onRequestPut({ request, env }) {
   await env.DB.prepare(
     `INSERT INTO site_text (key, lang, value) VALUES (?1, ?2, ?3)
      ON CONFLICT (key, lang) DO UPDATE SET value = excluded.value, updated_at = strftime('%Y-%m-%dT%H:%M:%SZ','now')`
-  ).bind(slot.key, lang, clean(body.value, 600)).run();
+  ).bind(slot.key, lang, clean(body.value, slot.maxLen || 600)).run();
   return json({ ok: true });
 }
