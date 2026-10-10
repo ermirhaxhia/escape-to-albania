@@ -101,3 +101,5 @@ Turi jeton në D1 (tabelat `tours`, `tour_i18n`, `tour_tags`, `tour_steps`, `tou
 ## About dhe SEO e faqeve
 
 Fushat e faqes About janë në `functions/_lib/slots.js` (kopertina, foto e guidës, historia me paragrafë të lirë, statistika shtesë, orari `ora | titulli | teksti`, vlerësimet, thirrja e fundit). Çdo faqe kryesore (Home, Tours, About, Journal, Contact) ka edhe seksionin **SEO** (SEO title dhe Meta description). Ato i shkruan `functions/_middleware.js` në HTML-në që del nga serveri (HTMLRewriter), që Google dhe WhatsApp t'i shohin pa JavaScript. Kur nuk është ndryshuar asgjë te paneli, faqja del e paprekur. `public/_routes.json` e kufizon middleware-in vetëm te këto pesë faqe dhe te API-të, kështu skedarët statikë (CSS, JS, imazhe) nuk e ngarkojnë aspak. Nëse shton një faqe të re kryesore, shtoje te `PAGES` në middleware dhe te `_routes.json`.
+
+- **Footer**: teksti, titujt e kolonave, lidhjet e kolonës 1, kolona shtesë dhe rreshti i poshtëm janë slot-et `footer.*` te CMS (Të përgjithshme > Footer). Blloku HTML është i njëjtë në çdo faqe te `public/*.html`; `applyFooter` te `app.js` e plotëson me ato që ka shkruar guida.
